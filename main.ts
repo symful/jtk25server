@@ -23,7 +23,7 @@ router
       `./builds/${version}.apk`,
     );
   })
-  .get("/api/version", (context) => context.response.body = 1)
+  .get("/api/version", (context) => context.response.body = 1.1)
   .get("/api/schedules", (context) => {
     context.response.body = schedulesData;
   });
