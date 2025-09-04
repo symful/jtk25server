@@ -910,7 +910,7 @@
           "day": "RABU",
           "sessions": [
             {
-              "time": "8.40-9.30",
+              "time": "08.40-09.30",
               "course_code": "25KU1008",
               "course_name": "Matematika Terapan A",
               "type": "TE",
@@ -919,7 +919,7 @@
               "room": "D219-Kelas"
             },
             {
-              "time": "9.50-10.40",
+              "time": "09.50-10.40",
               "course_code": "25KU1008",
               "course_name": "Matematika Terapan A",
               "type": "TE",
@@ -952,7 +952,7 @@
             },
 
             {
-              "time": "8.40-9.30",
+              "time": "08.40-09.30",
               "course_code": "25KU0002",
               "course_name": "Pendidikan Pancasila",
               "type": "TE",
@@ -961,7 +961,7 @@
               "room": "D219-Kelas"
             },
             {
-              "time": "9.50-10.40",
+              "time": "09.50-10.40",
               "course_code": "25KU0002",
               "course_name": "Pendidikan Pancasila",
               "type": "TE",
