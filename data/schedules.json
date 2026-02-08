@@ -1251,7 +1251,7 @@
       ]
     },
     {
-      "class_name": "1B-D3",
+     "class_name": "1B-D3",
       "schedule": [
         {
           "day": "SENIN",
@@ -1402,16 +1402,7 @@
               "room": "D105-Kelas"
             },
             {
-              "time": "10.40-11.30",
-              "course_code": "25IG1018",
-              "course_name": "Bahasa Inggris 2",
-              "type": "TE",
-              "lecturer_code": "IG025N",
-              "lecturer": "Muhammad Yazidus S",
-              "room": "D105-Kelas"
-            },
-            {
-              "time": "11.30-12.20",
+              "time": "13.00-13.50",
               "course_code": "25IG1018",
               "course_name": "Bahasa Inggris 2",
               "type": "PR",
@@ -1427,6 +1418,79 @@
               "lecturer_code": "IG025N",
               "lecturer": "Muhammad Yazidus S",
               "room": "D105-Kelas"
+            }
+          ]
+        },
+        {
+          "day": "KAMIS",
+          "sessions": [
+            {
+              "time": "10.40-11.30",
+              "course_code": "25KU0003",
+              "course_name": "Pendidikan Kewarganegaraan",
+              "type": "TE",
+              "lecturer_code": "KO080N",
+              "lecturer": "Hilman",
+              "room": "D112-Kelas"
+            },
+            {
+              "time": "11.30-12.20",
+              "course_code": "25KU0003",
+              "course_name": "Pendidikan Kewarganegaraan",
+              "type": "TE",
+              "lecturer_code": "KO080N",
+              "lecturer": "Hilman",
+              "room": "D112-Kelas"
+            },
+            {
+              "time": "13.00-13.50",
+              "course_code": "25IF1104",
+              "course_name": "Matematika Diskrit 1",
+              "type": "TE",
+              "lecturer_code": "KO021N",
+              "lecturer": "Setiadi Rachmat",
+              "room": "D223-Kelas"
+            },
+            {
+              "time": "13.50-14.40",
+              "course_code": "25IF1104",
+              "course_name": "Matematika Diskrit 1",
+              "type": "TE",
+              "lecturer_code": "KO021N",
+              "lecturer": "Setiadi Rachmat",
+              "room": "D223-Kelas"
+            },
+            {
+              "time": "14.40-15.30",
+              "course_code": "25IF1104",
+              "course_name": "Matematika Diskrit 1",
+              "type": "TE",
+              "lecturer_code": "KO021N",
+              "lecturer": "Setiadi Rachmat",
+              "room": "D223-Kelas"
+            }
+          ]
+        },
+        {
+          "day": "JUMAT",
+          "sessions": [
+            {
+              "time": "16.40-17.30",
+              "course_code": "25IF1108",
+              "course_name": "Komunikasi Data dan Jaringan",
+              "type": "PR",
+              "lecturer_code": "KO077N",
+              "lecturer": "Sofy Fitriani",
+              "room": "D106-LAB.SDB"
+            },
+            {
+              "time": "17.30-18.20",
+              "course_code": "25IF1108",
+              "course_name": "Komunikasi Data dan Jaringan",
+              "type": "PR",
+              "lecturer_code": "KO077N",
+              "lecturer": "Sofy Fitriani",
+              "room": "D106-LAB.SDB"
             }
           ]
         }
