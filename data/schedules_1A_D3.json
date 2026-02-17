@@ -7,52 +7,52 @@
     {
       "day": "SENIN",
       "sessions": [
-        {"time": "08.40-09.30", "course_code": "25IF1107", "course_name": "Struktur Data & Algoritma", "type": "TE", "lecturer_code": "KO009N", "lecturer": "Santi Sundari", "room": "D108-Kelas"},
-        {"time": "09.50-10.40", "course_code": "25IF1107", "course_name": "Struktur Data & Algoritma", "type": "TE", "lecturer_code": "KO009N", "lecturer": "Santi Sundari", "room": "D108-Kelas"}
+        {"time": "09.20-10.00", "course_code": "25IF1107", "course_name": "Struktur Data & Algoritma", "type": "TE", "lecturer_code": "KO009N", "lecturer": "Santi Sundari", "room": "D108-Kelas"},
+        {"time": "10.00-10.40", "course_code": "25IF1107", "course_name": "Struktur Data & Algoritma", "type": "TE", "lecturer_code": "KO009N", "lecturer": "Santi Sundari", "room": "D108-Kelas"}
       ]
     },
     {
       "day": "SELASA",
       "sessions": [
-        {"time": "07.00-07.50", "course_code": "25IF1105", "course_name": "Aljabar Linear", "type": "TE", "lecturer_code": "KO074N", "lecturer": "Muhammad Rizqi S", "room": "D111-Kelas"},
-        {"time": "07.50-08.40", "course_code": "25IF1105", "course_name": "Aljabar Linear", "type": "TE", "lecturer_code": "KO074N", "lecturer": "Muhammad Rizqi S", "room": "D111-Kelas"},
-        {"time": "08.40-09.30", "course_code": "25IF1107", "course_name": "Struktur Data & Algoritma", "type": "PR", "lecturer_code": "KO079N", "lecturer": "Wendi Wirasta", "room": "D107-Lab. RPL"},
-        {"time": "09.50-10.40", "course_code": "25IF1107", "course_name": "Struktur Data & Algoritma", "type": "PR", "lecturer_code": "KO079N", "lecturer": "Wendi Wirasta", "room": "D107-Lab. RPL"},
-        {"time": "10.40-11.30", "course_code": "25IF1107", "course_name": "Struktur Data & Algoritma", "type": "PR", "lecturer_code": "KO079N", "lecturer": "Wendi Wirasta", "room": "D107-Lab. RPL"},
-        {"time": "11.30-12.20", "course_code": "25IF1107", "course_name": "Struktur Data & Algoritma", "type": "PR", "lecturer_code": "KO079N", "lecturer": "Wendi Wirasta", "room": "D107-Lab. RPL"},
-        {"time": "13.00-13.50", "course_code": "25IF1109", "course_name": "Proyek 2 : Pengembangan Aplikasi Berbasis Library", "type": "PR", "lecturer_code": "KO073N, KO063N, KO075N", "lecturer": "Muhammad Riza A, Maisevli Harika, Siti Dwi Setiarini", "room": "D115-Lab. PjBL-1"},
-        {"time": "13.50-14.40", "course_code": "25IF1109", "course_name": "Proyek 2 : Pengembangan Aplikasi Berbasis Library", "type": "PR", "lecturer_code": "KO073N, KO063N, KO075N", "lecturer": "Muhammad Riza A, Maisevli Harika, Siti Dwi Setiarini", "room": "D115-Lab. PjBL-1"},
-        {"time": "14.40-15.30", "course_code": "25IF1109", "course_name": "Proyek 2 : Pengembangan Aplikasi Berbasis Library", "type": "PR", "lecturer_code": "KO073N, KO063N, KO075N", "lecturer": "Muhammad Riza A, Maisevli Harika, Siti Dwi Setiarini", "room": "D115-Lab. PjBL-1"},
-        {"time": "15.50-16.40", "course_code": "25IF1109", "course_name": "Proyek 2 : Pengembangan Aplikasi Berbasis Library", "type": "PR", "lecturer_code": "KO073N, KO063N, KO075N", "lecturer": "Muhammad Riza A, Maisevli Harika, Siti Dwi Setiarini", "room": "D115-Lab. PjBL-1"}
+        {"time": "08.00-08.40", "course_code": "25IF1105", "course_name": "Aljabar Linear", "type": "TE", "lecturer_code": "KO074N", "lecturer": "Muhammad Rizqi S", "room": "D111-Kelas"},
+        {"time": "08.40-09.20", "course_code": "25IF1105", "course_name": "Aljabar Linear", "type": "TE", "lecturer_code": "KO074N", "lecturer": "Muhammad Rizqi S", "room": "D111-Kelas"},
+        {"time": "09.20-10.00", "course_code": "25IF1107", "course_name": "Struktur Data & Algoritma", "type": "PR", "lecturer_code": "KO079N", "lecturer": "Wendi Wirasta", "room": "D107-Lab. RPL"},
+        {"time": "10.00-10.40", "course_code": "25IF1107", "course_name": "Struktur Data & Algoritma", "type": "PR", "lecturer_code": "KO079N", "lecturer": "Wendi Wirasta", "room": "D107-Lab. RPL"},
+        {"time": "10.40-11.20", "course_code": "25IF1107", "course_name": "Struktur Data & Algoritma", "type": "PR", "lecturer_code": "KO079N", "lecturer": "Wendi Wirasta", "room": "D107-Lab. RPL"},
+        {"time": "11.20-12.00", "course_code": "25IF1107", "course_name": "Struktur Data & Algoritma", "type": "PR", "lecturer_code": "KO079N", "lecturer": "Wendi Wirasta", "room": "D107-Lab. RPL"},
+        {"time": "12.30-13.10", "course_code": "25IF1109", "course_name": "Proyek 2 : Pengembangan Aplikasi Berbasis Library", "type": "PR", "lecturer_code": "KO073N, KO063N, KO075N", "lecturer": "Muhammad Riza A, Maisevli Harika, Siti Dwi Setiarini", "room": "D115-Lab. PjBL-1"},
+        {"time": "13.10-13.50", "course_code": "25IF1109", "course_name": "Proyek 2 : Pengembangan Aplikasi Berbasis Library", "type": "PR", "lecturer_code": "KO073N, KO063N, KO075N", "lecturer": "Muhammad Riza A, Maisevli Harika, Siti Dwi Setiarini", "room": "D115-Lab. PjBL-1"},
+        {"time": "13.50-14.30", "course_code": "25IF1109", "course_name": "Proyek 2 : Pengembangan Aplikasi Berbasis Library", "type": "PR", "lecturer_code": "KO073N, KO063N, KO075N", "lecturer": "Muhammad Riza A, Maisevli Harika, Siti Dwi Setiarini", "room": "D115-Lab. PjBL-1"},
+        {"time": "15.10-15.50", "course_code": "25IF1109", "course_name": "Proyek 2 : Pengembangan Aplikasi Berbasis Library", "type": "PR", "lecturer_code": "KO073N, KO063N, KO075N", "lecturer": "Muhammad Riza A, Maisevli Harika, Siti Dwi Setiarini", "room": "D115-Lab. PjBL-1"}
       ]
     },
     {
       "day": "RABU",
       "sessions": [
-        {"time": "07.00-07.50", "course_code": "25IF1106", "course_name": "Komputasi Kognitif", "type": "TE", "lecturer_code": "KO018N", "lecturer": "Jonner Hutahaean", "room": "D108-Kelas"},
-        {"time": "07.50-08.40", "course_code": "25IF1106", "course_name": "Komputasi Kognitif", "type": "TE", "lecturer_code": "KO018N", "lecturer": "Jonner Hutahaean", "room": "D108-Kelas"},
-        {"time": "08.40-09.30", "course_code": "25IF1104", "course_name": "Matematika Diskrit 1", "type": "TE", "lecturer_code": "KO065N", "lecturer": "Aprianti Nanda S", "room": "D108-Kelas"},
-        {"time": "09.50-10.40", "course_code": "25IF1104", "course_name": "Matematika Diskrit 1", "type": "TE", "lecturer_code": "KO065N", "lecturer": "Aprianti Nanda S", "room": "D108-Kelas"},
-        {"time": "10.40-11.30", "course_code": "25IF1104", "course_name": "Matematika Diskrit 1", "type": "TE", "lecturer_code": "KO065N", "lecturer": "Aprianti Nanda S", "room": "D108-Kelas"},
-        {"time": "13.50-14.40", "course_code": "25IG1018", "course_name": "Bahasa Inggris 2", "type": "TE", "lecturer_code": "IG025N", "lecturer": "Muhammad Yazidus S", "room": "D108-Kelas"},
-        {"time": "14.40-15.30", "course_code": "25IG1018", "course_name": "Bahasa Inggris 2", "type": "PR", "lecturer_code": "IG025N", "lecturer": "Muhammad Yazidus S", "room": "D108-Kelas"},
-        {"time": "15.50-16.40", "course_code": "25IG1018", "course_name": "Bahasa Inggris 2", "type": "PR", "lecturer_code": "IG025N", "lecturer": "Muhammad Yazidus S", "room": "D108-Kelas"}
+        {"time": "08.00-08.40", "course_code": "25IF1106", "course_name": "Komputasi Kognitif", "type": "TE", "lecturer_code": "KO018N", "lecturer": "Jonner Hutahaean", "room": "D108-Kelas"},
+        {"time": "08.40-09.20", "course_code": "25IF1106", "course_name": "Komputasi Kognitif", "type": "TE", "lecturer_code": "KO018N", "lecturer": "Jonner Hutahaean", "room": "D108-Kelas"},
+        {"time": "09.20-10.00", "course_code": "25IF1104", "course_name": "Matematika Diskrit 1", "type": "TE", "lecturer_code": "KO065N", "lecturer": "Aprianti Nanda S", "room": "D108-Kelas"},
+        {"time": "10.00-10.40", "course_code": "25IF1104", "course_name": "Matematika Diskrit 1", "type": "TE", "lecturer_code": "KO065N", "lecturer": "Aprianti Nanda S", "room": "D108-Kelas"},
+        {"time": "10.40-11.20", "course_code": "25IF1104", "course_name": "Matematika Diskrit 1", "type": "TE", "lecturer_code": "KO065N", "lecturer": "Aprianti Nanda S", "room": "D108-Kelas"},
+        {"time": "13.10-13.50", "course_code": "25IG1018", "course_name": "Bahasa Inggris 2", "type": "TE", "lecturer_code": "IG025N", "lecturer": "Muhammad Yazidus S", "room": "D108-Kelas"},
+        {"time": "13.50-14.30", "course_code": "25IG1018", "course_name": "Bahasa Inggris 2", "type": "PR", "lecturer_code": "IG025N", "lecturer": "Muhammad Yazidus S", "room": "D108-Kelas"},
+        {"time": "15.10-15.50", "course_code": "25IG1018", "course_name": "Bahasa Inggris 2", "type": "PR", "lecturer_code": "IG025N", "lecturer": "Muhammad Yazidus S", "room": "D108-Kelas"}
       ]
     },
     {
       "day": "KAMIS",
       "sessions": [
-        {"time": "10.40-11.30", "course_code": "25KU0003", "course_name": "Pendidikan Kewarganegaraan", "type": "TE", "lecturer_code": "KO081N", "lecturer": "Tarekh Febriana Putra", "room": "D101-Kelas"},
-        {"time": "11.30-12.20", "course_code": "25KU0003", "course_name": "Pendidikan Kewarganegaraan", "type": "TE", "lecturer_code": "KO081N", "lecturer": "Tarekh Febriana Putra", "room": "D101-Kelas"}
+        {"time": "10.40-11.20", "course_code": "25KU0003", "course_name": "Pendidikan Kewarganegaraan", "type": "TE", "lecturer_code": "KO081N", "lecturer": "Tarekh Febriana Putra", "room": "D101-Kelas"},
+        {"time": "11.20-12.00", "course_code": "25KU0003", "course_name": "Pendidikan Kewarganegaraan", "type": "TE", "lecturer_code": "KO081N", "lecturer": "Tarekh Febriana Putra", "room": "D101-Kelas"}
       ]
     },
     {
       "day": "JUMAT",
       "sessions": [
-        {"time": "13.30-14.20", "course_code": "25IF1108", "course_name": "Komunikasi Data dan Jaringan", "type": "TE", "lecturer_code": "KO077N", "lecturer": "Sofy Fitriani", "room": "D108-Kelas"},
-        {"time": "14.20-15.10", "course_code": "25IF1108", "course_name": "Komunikasi Data dan Jaringan", "type": "TE", "lecturer_code": "KO077N", "lecturer": "Sofy Fitriani", "room": "D108-Kelas"},
-        {"time": "15.30-16.00", "course_code": "25IF1108", "course_name": "Komunikasi Data dan Jaringan", "type": "PR", "lecturer_code": "KO077N", "lecturer": "Sofy Fitriani", "room": "D106-Lab. SDB"},
-        {"time": "16.20-17.10", "course_code": "25IF1108", "course_name": "Komunikasi Data dan Jaringan", "type": "PR", "lecturer_code": "KO077N", "lecturer": "Sofy Fitriani", "room": "D106-Lab. SDB"}
+        {"time": "13.40-14.20", "course_code": "25IF1108", "course_name": "Komunikasi Data dan Jaringan", "type": "TE", "lecturer_code": "KO077N", "lecturer": "Sofy Fitriani", "room": "D108-Kelas"},
+        {"time": "14.20-15.00", "course_code": "25IF1108", "course_name": "Komunikasi Data dan Jaringan", "type": "TE", "lecturer_code": "KO077N", "lecturer": "Sofy Fitriani", "room": "D108-Kelas"},
+        {"time": "15.30-16.10", "course_code": "25IF1108", "course_name": "Komunikasi Data dan Jaringan", "type": "PR", "lecturer_code": "KO077N", "lecturer": "Sofy Fitriani", "room": "D106-Lab. SDB"},
+        {"time": "16.10-16.50", "course_code": "25IF1108", "course_name": "Komunikasi Data dan Jaringan", "type": "PR", "lecturer_code": "KO077N", "lecturer": "Sofy Fitriani", "room": "D106-Lab. SDB"}
       ]
     }
   ]

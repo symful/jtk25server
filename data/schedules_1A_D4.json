@@ -1,14 +1,14 @@
 {
   "academic_year": "2025/2026",
   "semester": "GENAP",
-  "curriculum": "2025",
+  "curriculum": "2026",
   "class_name": "1A-D4",
   "schedule": [
     {
       "day": "SENIN",
       "sessions": [
         {
-          "time": "07.00-07.50",
+          "time": "08.00-08.40",
           "course_code": "25TI1106",
           "course_name": "Proyek 1 : Pengembangan Perangkat Lunak Desktop",
           "type": "PR",
@@ -17,7 +17,7 @@
           "room": "D106-Lab. SDB"
         },
         {
-          "time": "07.50-08.40",
+          "time": "08.40-09.20",
           "course_code": "25TI1106",
           "course_name": "Proyek 1 : Pengembangan Perangkat Lunak Desktop",
           "type": "PR",
@@ -26,7 +26,7 @@
           "room": "D106-Lab. SDB"
         },
         {
-          "time": "08.40-09.30",
+          "time": "09.20-10.00",
           "course_code": "25TI1106",
           "course_name": "Proyek 1 : Pengembangan Perangkat Lunak Desktop",
           "type": "PR",
@@ -35,7 +35,7 @@
           "room": "D106-Lab. SDB"
         },
         {
-          "time": "09.50-10.40",
+          "time": "10.00-10.40",
           "course_code": "25TI1106",
           "course_name": "Proyek 1 : Pengembangan Perangkat Lunak Desktop",
           "type": "PR",
@@ -44,7 +44,7 @@
           "room": "D106-Lab. SDB"
         },
         {
-          "time": "10.40-11.30",
+          "time": "10.40-11.20",
           "course_code": "25TI1106",
           "course_name": "Proyek 1 : Pengembangan Perangkat Lunak Desktop",
           "type": "PR",
@@ -53,7 +53,7 @@
           "room": "D106-Lab. SDB"
         },
         {
-          "time": "11.30-12.20",
+          "time": "11.20-12.00",
           "course_code": "25TI1106",
           "course_name": "Proyek 1 : Pengembangan Perangkat Lunak Desktop",
           "type": "PR",
@@ -62,7 +62,7 @@
           "room": "D106-Lab. SDB"
         },
         {
-          "time": "13.00-13.50",
+          "time": "12.30-13.10",
           "course_code": "25KU1009",
           "course_name": "Matematika Terapan B",
           "type": "TE",
@@ -71,7 +71,7 @@
           "room": "D112-Kelas"
         },
         {
-          "time": "13.50-14.40",
+          "time": "13.10-13.50",
           "course_code": "25KU1009",
           "course_name": "Matematika Terapan B",
           "type": "TE",
@@ -80,7 +80,7 @@
           "room": "D112-Kelas"
         },
         {
-          "time": "14.40-15.30",
+          "time": "13.50-14.30",
           "course_code": "25KU1009",
           "course_name": "Matematika Terapan B",
           "type": "TE",
@@ -94,7 +94,7 @@
       "day": "SELASA",
       "sessions": [
         {
-          "time": "07.50-08.40",
+          "time": "08.40-09.20",
           "course_code": "25TI1107",
           "course_name": "Teknik Pemrograman",
           "type": "TE",
@@ -103,7 +103,7 @@
           "room": "D101-Kelas"
         },
         {
-          "time": "08.40-09.30",
+          "time": "09.20-10.00",
           "course_code": "25TI1107",
           "course_name": "Teknik Pemrograman",
           "type": "TE",
@@ -112,7 +112,7 @@
           "room": "D101-Kelas"
         },
         {
-          "time": "10.40-11.30",
+          "time": "10.40-11.20",
           "course_code": "25TI1105",
           "course_name": "Struktur Data dan Algoritma",
           "type": "PR",
@@ -121,7 +121,7 @@
           "room": "D106-Lab. SDB"
         },
         {
-          "time": "11.30-12.20",
+          "time": "11.20-12.00",
           "course_code": "25TI1105",
           "course_name": "Struktur Data dan Algoritma",
           "type": "PR",
@@ -130,7 +130,7 @@
           "room": "D106-Lab. SDB"
         },
         {
-          "time": "13.00-13.50",
+          "time": "12.30-13.10",
           "course_code": "25TI1105",
           "course_name": "Struktur Data dan Algoritma",
           "type": "PR",
@@ -139,7 +139,7 @@
           "room": "D106-Lab. SDB"
         },
         {
-          "time": "13.50-14.40",
+          "time": "13.10-13.50",
           "course_code": "25TI1105",
           "course_name": "Struktur Data dan Algoritma",
           "type": "PR",
@@ -153,7 +153,7 @@
       "day": "RABU",
       "sessions": [
         {
-          "time": "07.00-07.50",
+          "time": "08.00-08.40",
           "course_code": "25KU1007",
           "course_name": "Bahasa Indonesia",
           "type": "TE",
@@ -162,7 +162,7 @@
           "room": "H504-Kelas"
         },
         {
-          "time": "07.50-08.40",
+          "time": "08.40-09.20",
           "course_code": "25KU1007",
           "course_name": "Bahasa Indonesia",
           "type": "TE",
@@ -171,7 +171,7 @@
           "room": "H504-Kelas"
         },
         {
-          "time": "08.40-09.30",
+          "time": "09.20-10.00",
           "course_code": "25KU1001",
           "course_name": "Pendidikan Agama",
           "type": "TE",
@@ -180,7 +180,7 @@
           "room": "H506-Kelas"
         },
         {
-          "time": "09.50-10.40",
+          "time": "10.00-10.40",
           "course_code": "25KU1001",
           "course_name": "Pendidikan Agama",
           "type": "TE",
@@ -189,7 +189,7 @@
           "room": "H506-Kelas"
         },
         {
-          "time": "13.00-13.50",
+          "time": "12.30-13.10",
           "course_code": "25TI1107",
           "course_name": "Teknik Pemrograman",
           "type": "PR",
@@ -198,7 +198,7 @@
           "room": "D106-Lab. SDB"
         },
         {
-          "time": "13.50-14.40",
+          "time": "13.10-13.50",
           "course_code": "25TI1107",
           "course_name": "Teknik Pemrograman",
           "type": "PR",
@@ -207,7 +207,7 @@
           "room": "D106-Lab. SDB"
         },
         {
-          "time": "14.40-15.30",
+          "time": "13.50-14.30",
           "course_code": "25TI1107",
           "course_name": "Teknik Pemrograman",
           "type": "PR",
@@ -216,7 +216,7 @@
           "room": "D106-Lab. SDB"
         },
         {
-          "time": "15.50-16.40",
+          "time": "15.10-15.50",
           "course_code": "25TI1107",
           "course_name": "Teknik Pemrograman",
           "type": "PR",
@@ -230,7 +230,7 @@
       "day": "KAMIS",
       "sessions": [
         {
-          "time": "09.50-10.40",
+          "time": "10.00-10.40",
           "course_code": "25IG1018",
           "course_name": "Bahasa Inggris 2",
           "type": "TE",
@@ -239,7 +239,7 @@
           "room": "D217-Kelas"
         },
         {
-          "time": "10.40-11.30",
+          "time": "10.40-11.20",
           "course_code": "25IG1018",
           "course_name": "Bahasa Inggris 2",
           "type": "PR",
@@ -248,7 +248,7 @@
           "room": "D217-Kelas"
         },
         {
-          "time": "11.30-12.20",
+          "time": "11.20-12.00",
           "course_code": "25IG1018",
           "course_name": "Bahasa Inggris 2",
           "type": "PR",
@@ -262,7 +262,7 @@
       "day": "JUMAT",
       "sessions": [
         {
-          "time": "07.00-07.50",
+          "time": "08.00-08.40",
           "course_code": "25TI1105",
           "course_name": "Struktur Data dan Algoritma",
           "type": "TE",
@@ -271,7 +271,7 @@
           "room": "D224-Kelas"
         },
         {
-          "time": "07.50-08.40",
+          "time": "08.40-09.20",
           "course_code": "25TI1105",
           "course_name": "Struktur Data dan Algoritma",
           "type": "TE",
