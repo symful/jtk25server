@@ -49,8 +49,8 @@
     {
       "day": "JUMAT",
       "sessions": [
-        {"time": "16.10-16.50", "course_code": "25IF1108", "course_name": "Komunikasi Data dan Jaringan", "type": "PR", "lecturer_code": "KO077N", "lecturer": "Sofy Fitriani", "room": "D106-LAB.SDB"},
-        {"time": "16.50-17.30", "course_code": "25IF1108", "course_name": "Komunikasi Data dan Jaringan", "type": "PR", "lecturer_code": "KO077N", "lecturer": "Sofy Fitriani", "room": "D106-LAB.SDB"}
+        {"time": "16.50-17.30", "course_code": "25IF1108", "course_name": "Komunikasi Data dan Jaringan", "type": "PR", "lecturer_code": "KO077N", "lecturer": "Sofy Fitriani", "room": "D106-LAB.SDB"},
+        {"time": "17.30-18.10", "course_code": "25IF1108", "course_name": "Komunikasi Data dan Jaringan", "type": "PR", "lecturer_code": "KO077N", "lecturer": "Sofy Fitriani", "room": "D106-LAB.SDB"}
       ]
     }
   ]
