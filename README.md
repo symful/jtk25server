@@ -12,17 +12,25 @@ Data jadwal tersimpan dalam format JSON di folder `data/` dengan penamaan file m
 
 1. **Fork** repositori ini ke akun GitHub Anda
 2. **Clone** hasil fork ke komputer lokal:
-   git clone https://github.com/username-anda/JTK25Server.git
+```sh
+git clone https://github.com/username-anda/JTK25Server.git
+```
 3. **Buat branch baru** untuk perubahan Anda:
-   git checkout -b update-jadwal-kelas-1A
+```sh
+git checkout -b update-jadwal-kelas-1A
+```
 4. **Lakukan perubahan** pada file JSON yang sesuai di folder `data/`
    - Pastikan format JSON tetap valid
    - Sesuaikan dengan kelas yang ingin diubah
 5. **Commit** perubahan Anda:
-   git add .
-   git commit -m "Update jadwal kelas 1A D3"
+```sh
+git add .
+git commit -m "Update jadwal kelas 1A D3"
+```
 6. **Push** ke branch Anda:
-   git push origin update-jadwal-kelas-1A
+```sh
+git push origin update-jadwal-kelas-1A
+```
 7. **Buat Pull Request** ke repositori utama melalui antarmuka GitHub
 
 ## Lisensi
