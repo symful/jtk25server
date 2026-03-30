@@ -121,7 +121,7 @@
           "room": "D112-Kelas"
         },
         {
-          "time": "10.40-11.20",
+          "time": "10.40-11.30",
           "course_code": "25KU1009",
           "course_name": "Matematika Terapan B",
           "type": "TE",
@@ -130,7 +130,7 @@
           "room": "D112-Kelas"
         },
         {
-          "time": "12.30-13.10",
+          "time": "13.00-13.50",
           "course_code": "25TI1105",
           "course_name": "Struktur Data dan Algoritma",
           "type": "TE",
@@ -139,7 +139,7 @@
           "room": "D112-Kelas"
         },
         {
-          "time": "13.10-13.50",
+          "time": "13.50-14.40",
           "course_code": "25TI1105",
           "course_name": "Struktur Data dan Algoritma",
           "type": "TE",
@@ -153,7 +153,7 @@
       "day": "RABU",
       "sessions": [
         {
-          "time": "08.00-08.40",
+          "time": "07.00-07.50",
           "course_code": "25KU1001",
           "course_name": "Pendidikan Agama",
           "type": "TE",
@@ -162,7 +162,7 @@
           "room": "H506-Kelas"
         },
         {
-          "time": "08.40-09.20",
+          "time": "07.50-08.40",
           "course_code": "25KU1001",
           "course_name": "Pendidikan Agama",
           "type": "TE",
@@ -171,7 +171,7 @@
           "room": "H506-Kelas"
         },
         {
-          "time": "10.00-10.40",
+          "time": "09.50-10.40",
           "course_code": "25IG1018",
           "course_name": "Bahasa Inggris 2",
           "type": "TE",
@@ -180,7 +180,7 @@
           "room": "D224-Kelas"
         },
         {
-          "time": "10.40-11.20",
+          "time": "10.40-11.30",
           "course_code": "25IG1018",
           "course_name": "Bahasa Inggris 2",
           "type": "PR",
@@ -189,7 +189,7 @@
           "room": "D224-Kelas"
         },
         {
-          "time": "11.20-12.00",
+          "time": "11.30-12.20",
           "course_code": "25IG1018",
           "course_name": "Bahasa Inggris 2",
           "type": "PR",
@@ -207,7 +207,7 @@
           "room": "H504-Kelas"
         },
         {
-          "time": "15.10-15.50",
+          "time": "15.50-16.40",
           "course_code": "25KU1007",
           "course_name": "Bahasa Indonesia",
           "type": "TE",
@@ -221,7 +221,7 @@
       "day": "KAMIS",
       "sessions": [
         {
-          "time": "08.00-08.40",
+          "time": "07.00-07.50",
           "course_code": "25TI1105",
           "course_name": "Struktur Data dan Algoritma",
           "type": "PR",
@@ -230,7 +230,7 @@
           "room": "D102-Lab. MT"
         },
         {
-          "time": "08.40-09.20",
+          "time": "07.50-08.40",
           "course_code": "25TI1105",
           "course_name": "Struktur Data dan Algoritma",
           "type": "PR",
@@ -239,7 +239,7 @@
           "room": "D102-Lab. MT"
         },
         {
-          "time": "12.30-13.10",
+          "time": "13.00-13.50",
           "course_code": "25TI1107",
           "course_name": "Teknik Pemrograman",
           "type": "PR",
@@ -248,7 +248,7 @@
           "room": "H502-Lab. AI"
         },
         {
-          "time": "13.10-13.50",
+          "time": "13.50-14.40",
           "course_code": "25TI1107",
           "course_name": "Teknik Pemrograman",
           "type": "PR",
@@ -257,7 +257,7 @@
           "room": "H502-Lab. AI"
         },
         {
-          "time": "13.50-14.30",
+          "time": "14.40-15.30",
           "course_code": "25TI1107",
           "course_name": "Teknik Pemrograman",
           "type": "PR",
@@ -266,7 +266,7 @@
           "room": "H502-Lab. AI"
         },
         {
-          "time": "15.10-15.50",
+          "time": "15.50-16.40",
           "course_code": "25TI1107",
           "course_name": "Teknik Pemrograman",
           "type": "PR",
