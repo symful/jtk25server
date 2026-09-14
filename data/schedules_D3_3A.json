@@ -1,0 +1,24 @@
+{
+  "schema": 2,
+  "semester": "2026/2027-GANJIL",
+  "updatedAt": "2026-09-14T09:36:00+07:00",
+  "data": {
+    "class_name": "D3-3A",
+    "schedule": [
+      {"day":"SENIN","sessions":[
+        {"time":"07.00-14.40","course_code":"25IF3126","course_name":"Best Practices Pengembangan Perangkat Lunak Industri","type":"PR","lecturer_code":"TG","lecturer":"Trisna Gelar, S.T., M.Kom.","room":"H504-Kelas"},
+        {"time":"15.40-17.20","course_code":"25IF3123","course_name":"Etika Profesi","type":"PR","lecturer_code":"ID","lecturer":"Ida Suhartini, S.Kom., MMSI.","room":"H504-Kelas"}
+      ]},
+      {"day":"SELASA","sessions":[
+        {"time":"07.00-10.40","course_code":"25IF3124","course_name":"Pengantar Pengembangan Perangkat Lunak Industri","type":"PR","lecturer_code":"BN","lecturer":"Beri Noviansyah, S.Kom., M.T.","room":"H504-Kelas"},
+        {"time":"16.30-17.20","course_code":"25IF3124","course_name":"Pengantar Pengembangan Perangkat Lunak Industri","type":"TE","lecturer_code":"WW","lecturer":"Wendi Wirasta, S.T., M.T.","room":"D105-Kelas"}
+      ]},
+      {"day":"KAMIS","sessions":[
+        {"time":"10.40-14.40","course_code":"25IF3128","course_name":"Proyek 5 : Studi Kelayakan Pengembangan Perangkat Lunak Aplikasi","type":"PR","lecturer_code":"BN,RA,AD","lecturer":"Beri Noviansyah, Rahil Jumiyani, Dr. Ade Chandra Nugraha","room":"D102-Lab. MT"}
+      ]},
+      {"day":"JUMAT","sessions":[
+        {"time":"10.40-11.30","course_code":"25IF3123","course_name":"Etika Profesi","type":"TE","lecturer_code":"ID","lecturer":"Ida Suhartini, S.Kom., MMSI.","room":"D101-Kelas"}
+      ]}
+    ]
+  }
+}

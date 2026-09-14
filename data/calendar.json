@@ -1,0 +1,16 @@
+{
+  "schema": 2,
+  "semester": "2026/2027-GANJIL",
+  "updatedAt": "2026-09-13T19:30:00+07:00",
+  "data": [
+    {
+      "id": "evt-001",
+      "title": "Kuliah Perdana Semester Ganjil 2026/2027",
+      "description": "Kuliah perdana untuk seluruh kelas D3 dan D4 angkatan 2025. Hadir tepat waktu sesuai jadwal masing-masing.",
+      "date": "2026-09-01T07:00:00+07:00",
+      "endDate": "2026-09-01T18:00:00+07:00",
+      "location": "Gedung JTK Polban",
+      "category": "Akademik"
+    }
+  ]
+}

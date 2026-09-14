@@ -1,0 +1,8 @@
+.sisyphus/
+node_modules/
+.wrangler/
+builds/
+dist/
+client_build/
+.dev.vars
+.env

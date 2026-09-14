@@ -1,0 +1,22 @@
+{
+  "name": "jtk25server",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "build:web": "cd web && npm install && npm run build",
+    "deploy": "npm run build:web && wrangler deploy",
+    "validate": "tsx tools/validate.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "hono": "^4.13.7"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260911.1",
+    "@types/node": "^26.5.1",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "tsx": "^4.23.13",
+    "vitest": "^5.0.0"
+  }
+}

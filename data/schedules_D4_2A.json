@@ -1,0 +1,33 @@
+{
+  "schema": 2,
+  "semester": "2026/2027-GANJIL",
+  "updatedAt": "2026-09-14T09:36:00+07:00",
+  "data": {
+    "class_name": "D4-2A",
+    "schedule": [
+      {"day":"SENIN","sessions":[
+        {"time":"07.00-08.40","course_code":"25TI2103","course_name":"Aljabar Linear","type":"PR","lecturer_code":"MR","lecturer":"Muhammad Rizqi Sholahuddin, S.Si., M.T.","room":"D102-Lab. MT"},
+        {"time":"13.00-14.40","course_code":"25TI2105","course_name":"Programming Pragmatics","type":"TE","lecturer_code":"RA","lecturer":"Rahil Jumiyani, S.ST., M.Sc.","room":"D101-Kelas"}
+      ]},
+      {"day":"SELASA","sessions":[
+        {"time":"07.00-08.40","course_code":"25TI2102","course_name":"Matematika Diskrit Lanjut","type":"PR","lecturer_code":"TG","lecturer":"Trisna Gelar, S.T., M.Kom.","room":"H501-Lab. TI"},
+        {"time":"08.40-12.20","course_code":"25TI2104","course_name":"Sistem Basis Data","type":"PR","lecturer_code":"DC","lecturer":"Djoko Cahyo Utomo L, S.Kom., M.MT.","room":"H501-Lab. TI"},
+        {"time":"13.00-14.40","course_code":"25TI2103","course_name":"Aljabar Linear","type":"TE","lecturer_code":"NJ","lecturer":"Dr. Nurjannah Syakrani, DRA., M.T.","room":"D108-Kelas"}
+      ]},
+      {"day":"RABU","sessions":[
+        {"time":"07.00-08.40","course_code":"25TI2101","course_name":"Arsitektur dan Organisasi Komputer","type":"TE","lecturer_code":"MV","lecturer":"Maisevli Harika, S.ST., M.T., M.Eng","room":"D111-Kelas"},
+        {"time":"08.40-10.40","course_code":"25TI2107","course_name":"Komunikasi Data dan Jaringan","type":"TE","lecturer_code":"SF","lecturer":"Sofy Fitriani, S.S.T., M.Kom","room":"D223-Kelas"},
+        {"time":"13.50-15.20","course_code":"25TI2106","course_name":"Sistem Operasi","type":"PR","lecturer_code":"RZ","lecturer":"Muhammad Riza Alifi, S.T., M.T.","room":"D116-Lab. PjBL-2"}
+      ]},
+      {"day":"KAMIS","sessions":[
+        {"time":"10.40-12.20","course_code":"25TI2106","course_name":"Sistem Operasi","type":"TE","lecturer_code":"ST","lecturer":"Setiadi Rachmat, M.Eng.","room":"D224-Kelas"},
+        {"time":"13.50-15.20","course_code":"25TI2104","course_name":"Sistem Basis Data","type":"TE","lecturer_code":"RZ","lecturer":"Muhammad Riza Alifi, S.T., M.T.","room":"D105-Kelas"}
+      ]},
+      {"day":"JUMAT","sessions":[
+        {"time":"08.40-10.40","course_code":"25TI2102","course_name":"Matematika Diskrit Lanjut","type":"TE","lecturer_code":"SD","lecturer":"Siti Dwi Setiarini, S.Si., M.T.","room":"D105-Kelas"},
+        {"time":"13.50-15.20","course_code":"25TI2107","course_name":"Komunikasi Data dan Jaringan","type":"PR","lecturer_code":"SF","lecturer":"Sofy Fitriani, S.S.T., M.Kom","room":"D107-Lab. RPL"},
+        {"time":"16.30-18.10","course_code":"25TI2105","course_name":"Programming Pragmatics","type":"PR","lecturer_code":"JO","lecturer":"Joe Lian Min, M.Eng.","room":"D107-Lab. RPL"}
+      ]}
+    ]
+  }
+}

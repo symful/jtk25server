@@ -1,0 +1,30 @@
+{
+  "schema": 2,
+  "semester": "2026/2027-GANJIL",
+  "updatedAt": "2026-09-14T09:36:00+07:00",
+  "data": {
+    "class_name": "D4-1D",
+    "schedule": [
+      {"day":"SENIN","sessions":[
+        {"time":"07.00-08.40","course_code":"25TI1104","course_name":"Matematika Diskrit Dasar","type":"PR","lecturer_code":"AP","lecturer":"Aprianti Nanda Sari, S.T., M.Kom.","room":"D115-Lab. PjBL-1"},
+        {"time":"08.40-12.20","course_code":"25TI1103","course_name":"Konsep Teknologi Informasi dan Komunikasi","type":"PR","lecturer_code":"YA","lecturer":"Yadhi Aditya Permana, S.T. M.Kom","room":"D115-Lab. PjBL-1"},
+        {"time":"13.00-13.50","course_code":"25TI1103","course_name":"Konsep Teknologi Informasi dan Komunikasi","type":"TE","lecturer_code":"YA","lecturer":"Yadhi Aditya Permana, S.T. M.Kom","room":"D219-Kelas"}
+      ]},
+      {"day":"SELASA","sessions":[
+        {"time":"07.00-08.40","course_code":"25KU0002","course_name":"Pendidikan Pancasila","type":"TE","lecturer_code":"CJ","lecturer":"Cahaya juniarti, M. Pd.","room":"D111-Kelas"},
+        {"time":"08.40-10.40","course_code":"25KU1008","course_name":"Matematika Terapan A","type":"TE","lecturer_code":"EB","lecturer":"Eddy B. Soewono, DRS., M.Kom.","room":"D224-Kelas"},
+        {"time":"10.40-12.20","course_code":"25TI1104","course_name":"Matematika Diskrit Dasar","type":"TE","lecturer_code":"AP","lecturer":"Aprianti Nanda Sari, S.T., M.Kom.","room":"D101-Kelas"}
+      ]},
+      {"day":"RABU","sessions":[
+        {"time":"07.00-07.50","course_code":"25IG1017","course_name":"Bahasa Inggris 1","type":"TE","lecturer_code":"YZD","lecturer":"YZD","room":"D108-Kelas"},
+        {"time":"07.50-09.30","course_code":"25IG1017","course_name":"Bahasa Inggris 1","type":"PR","lecturer_code":"YZD","lecturer":"YZD","room":"D108-Kelas"},
+        {"time":"13.00-16.30","course_code":"25TI1101","course_name":"Dasar-Dasar Pemrograman","type":"PR","lecturer_code":"WW","lecturer":"Wendi Wirasta, S.T., M.T.","room":"H502-Lab. AI"}
+      ]},
+      {"day":"KAMIS","sessions":[
+        {"time":"08.40-10.40","course_code":"25TI1102","course_name":"Komputasi Kognitif","type":"TE","lecturer_code":"AN","lecturer":"Ani Rahmani, S.Si., M.T.","room":"D105-Kelas"},
+        {"time":"10.40-12.20","course_code":"25TI1101","course_name":"Dasar-Dasar Pemrograman","type":"TE","lecturer_code":"SN","lecturer":"Santi Sundari, S.Si., M.T.","room":"D219-Kelas"},
+        {"time":"13.00-14.40","course_code":"25KU1008","course_name":"Matematika Terapan A","type":"PR","lecturer_code":"SD","lecturer":"Siti Dwi Setiarini, S.Si., M.T.","room":"D115-Lab. PjBL-1"}
+      ]}
+    ]
+  }
+}

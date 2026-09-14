@@ -1,0 +1,31 @@
+{
+  "schema": 2,
+  "semester": "2026/2027-GANJIL",
+  "updatedAt": "2026-09-14T09:36:00+07:00",
+  "data": {
+    "class_name": "D3-2A",
+    "schedule": [
+      {"day":"SENIN","sessions":[
+        {"time":"07.00-12.20","course_code":"25IF2116","course_name":"Proyek 3 : Pengembangan Perangkat Lunak Berbasis Web","type":"PR","lecturer_code":"MV,LH,RA","lecturer":"Maisevli Harika, Lukmannul Hakim Firdaus, Rahil Jumiyani","room":"H501-Lab. TI"},
+        {"time":"13.50-15.20","course_code":"25IF2112","course_name":"Pengantar Rekayasa Perangkat Lunak","type":"TE","lecturer_code":"SN","lecturer":"Santi Sundari","room":"D112-Kelas"},
+        {"time":"15.40-17.20","course_code":"25IF2115","course_name":"Komputer Grafik","type":"TE","lecturer_code":"YD","lecturer":"Yudi Widhiyasana","room":"D111-Kelas"}
+      ]},
+      {"day":"SELASA","sessions":[
+        {"time":"07.00-09.30","course_code":"25IF2111","course_name":"Matematika Diskrit 2","type":"TE","lecturer_code":"AP","lecturer":"Aprianti Nanda Sari","room":"D108-Kelas"},
+        {"time":"10.40-12.20","course_code":"25IF2110","course_name":"Dasar Komunikasi","type":"TE","lecturer_code":"FI","lecturer":"Fitri Diani","room":"D219-Kelas"},
+        {"time":"13.00-16.30","course_code":"25IF2114","course_name":"Basis Data","type":"PR","lecturer_code":"SW","lecturer":"Sri Ratna Wulan","room":"D106-Lab. SDB"}
+      ]},
+      {"day":"RABU","sessions":[
+        {"time":"07.00-10.40","course_code":"25IF2113","course_name":"Pemrograman Berorientasi Objek","type":"PR","lecturer_code":"LH","lecturer":"Lukmannul Hakim Firdaus","room":"H501-Lab. TI"},
+        {"time":"13.00-14.40","course_code":"25IF2113","course_name":"Pemrograman Berorientasi Objek","type":"TE","lecturer_code":"LH","lecturer":"Lukmannul Hakim Firdaus","room":"D224-Kelas"}
+      ]},
+      {"day":"KAMIS","sessions":[
+        {"time":"07.00-08.40","course_code":"25IF2114","course_name":"Basis Data","type":"TE","lecturer_code":"AD","lecturer":"Dr. Ade Chandra Nugraha, S.Si., M.T.","room":"D224-Kelas"},
+        {"time":"08.40-12.20","course_code":"25IF2112","course_name":"Pengantar Rekayasa Perangkat Lunak","type":"PR","lecturer_code":"YA","lecturer":"Yadhi Aditya Permana","room":"H502-Lab. AI"}
+      ]},
+      {"day":"JUMAT","sessions":[
+        {"time":"08.40-10.40","course_code":"25IF2115","course_name":"Komputer Grafik","type":"PR","lecturer_code":"TG","lecturer":"Trisna Gelar","room":"D115-Lab. PjBL-1"}
+      ]}
+    ]
+  }
+}

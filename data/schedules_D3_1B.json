@@ -1,0 +1,32 @@
+{
+  "schema": 2,
+  "semester": "2026/2027-GANJIL",
+  "updatedAt": "2026-09-14T09:36:00+07:00",
+  "data": {
+    "class_name": "D3-1B",
+    "schedule": [
+      {"day":"SENIN","sessions":[
+        {"time":"07.50-09.30","course_code":"25KU1008","course_name":"Matematika Terapan A","type":"TE","lecturer_code":"SD","lecturer":"Siti Dwi Setiarini, S.Si., M.T.","room":"D108-Kelas"}
+      ]},
+      {"day":"SELASA","sessions":[
+        {"time":"07.00-10.40","course_code":"25IF1003","course_name":"Proyek 1 : Pemanfaatan Aplikasi Perkantoran","type":"PR","lecturer_code":"SW,AM,HA","lecturer":"Sri Ratna Wulan, Asri Maspupah, Ade Hodijah","room":"D116-Lab. PjBL-2"}
+      ]},
+      {"day":"RABU","sessions":[
+        {"time":"10.40-12.20","course_code":"25KU1001","course_name":"Pendidikan Agama","type":"TE","lecturer_code":"WAWAY","lecturer":"Waway Qodratullah S","room":"D219-Kelas"},
+        {"time":"13.00-13.50","course_code":"25IG1017","course_name":"Bahasa Inggris 1","type":"TE","lecturer_code":"FAZA","lecturer":"Faza Hannan Purinanda","room":"D105-Kelas"},
+        {"time":"13.50-15.20","course_code":"25IG1017","course_name":"Bahasa Inggris 1","type":"PR","lecturer_code":"FAZA","lecturer":"Faza Hannan Purinanda","room":"D105-Kelas"},
+        {"time":"15.40-17.20","course_code":"25KU0002","course_name":"Pendidikan Pancasila","type":"TE","lecturer_code":"HG","lecturer":"Hilman Gufron, M.Pd.","room":"D223-Kelas"}
+      ]},
+      {"day":"KAMIS","sessions":[
+        {"time":"07.00-08.40","course_code":"25IF1102","course_name":"Dasar-dasar Pemrograman","type":"TE","lecturer_code":"IW","lecturer":"Irawan Thamrin, IR., M.T.","room":"D111-Kelas"},
+        {"time":"08.40-10.40","course_code":"25KU1008","course_name":"Matematika Terapan A","type":"PR","lecturer_code":"SD","lecturer":"Siti Dwi Setiarini, S.Si., M.T.","room":"D116-Lab. PjBL-2"},
+        {"time":"15.40-16.30","course_code":"25IF1101","course_name":"Pengantar Teknologi Informasi dan Komunikasi","type":"TE","lecturer_code":"CF","lecturer":"Cholid Fauzi, S.T., M.T.","room":"D107-Lab. RPL"},
+        {"time":"16.30-18.10","course_code":"25IF1101","course_name":"Pengantar Teknologi Informasi dan Komunikasi","type":"PR","lecturer_code":"CF","lecturer":"Cholid Fauzi, S.T., M.T.","room":"D107-Lab. RPL"}
+      ]},
+      {"day":"JUMAT","sessions":[
+        {"time":"07.00-10.40","course_code":"25IF1102","course_name":"Dasar-dasar Pemrograman","type":"PR","lecturer_code":"HA","lecturer":"Ade Hodijah, S.Kom., M.T.","room":"D106-Lab. SDB"},
+        {"time":"13.00-14.40","course_code":"25KU1007","course_name":"Bahasa Indonesia","type":"TE","lecturer_code":"TOPIK","lecturer":"Topik Mulyana","room":"D219-Kelas"}
+      ]}
+    ]
+  }
+}

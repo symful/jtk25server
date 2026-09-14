@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://jtk25.my.id/schemas/pengganti.json",
+  "title": "Pengganti",
+  "description": "Daftar jadwal pengganti (dated overrides)",
+  "type": "object",
+  "required": ["schema", "semester", "updatedAt", "data"],
+  "properties": {
+    "schema": {
+      "type": "integer",
+      "const": 2,
+      "description": "Schema version, always 2"
+    },
+    "semester": {
+      "type": "string",
+      "pattern": "^\\d{4}/\\d{4}-(GANJIL|GENAP)$",
+      "description": "Semester identifier"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of last update"
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/PenggantiEntry"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "DotTime": {
+      "type": "string",
+      "pattern": "^\\d{2}\\.\\d{2}-\\d{2}\\.\\d{2}$",
+      "description": "Time slot in dot notation"
+    },
+    "Day": {
+      "type": "string",
+      "enum": ["SENIN", "SELASA", "RABU", "KAMIS", "JUMAT", "SABTU", "MINGGU"]
+    },
+    "CourseType": {
+      "type": "string",
+      "enum": ["TE", "PR"]
+    },
+    "PenggantiKind": {
+      "type": "string",
+      "enum": ["replace", "add", "info"],
+      "description": "replace = replace default sessions, add = append sessions, info = banner only"
+    },
+    "Session": {
+      "type": "object",
+      "required": ["time", "course_code", "course_name", "type", "lecturer_code", "lecturer", "room"],
+      "properties": {
+        "time": {
+          "$ref": "#/$defs/DotTime"
+        },
+        "course_code": {
+          "type": "string"
+        },
+        "course_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "$ref": "#/$defs/CourseType"
+        },
+        "lecturer_code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lecturer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "room": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "PenggantiEntry": {
+      "type": "object",
+      "required": ["id", "class_code", "date", "kind"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for this pengganti entry"
+        },
+        "class_code": {
+          "type": "string",
+          "description": "Class code, e.g. D3-2A, D4-2A"
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date in YYYY-MM-DD format"
+        },
+        "kind": {
+          "$ref": "#/$defs/PenggantiKind"
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional note for info/replace entries"
+        },
+        "sessions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Session"
+          },
+          "description": "Replacement or additional sessions (empty for info kind)"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

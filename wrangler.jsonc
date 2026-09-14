@@ -1,0 +1,32 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "main": "src/index.ts",
+  "name": "jtk25server",
+  "compatibility_date": "2026-08-01",
+  "routes": [
+    {
+      "pattern": "jtk25.my.id",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.jtk25.my.id",
+      "custom_domain": true
+    }
+  ],
+  "assets": {
+    "directory": "web/dist",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "jtk25_schedules",
+      "database_name": "jtk25-schedules",
+      "database_id": "342e1656-9b73-4bc2-9a71-cf57e11889a6"
+    }
+  ]
+  // Secrets (not in config — set via `wrangler secret put FIREBASE_SERVICE_ACCOUNT`):
+  // - FIREBASE_SERVICE_ACCOUNT: Firebase service account JSON (project_id, client_email, private_key)
+}

@@ -1,0 +1,15 @@
+{
+  "schema": 2,
+  "semester": "2026/2027-GANJIL",
+  "updatedAt": "2026-09-13T19:30:00+07:00",
+  "data": [
+    {
+      "id": "ann-001",
+      "title": "Selamat Datang di Semester Ganjil 2026/2027",
+      "body": "Selamat datang kembali untuk mahasiswa JTK angkatan 2025. Semoga semester ini berjalan lancar. Periksa jadwal masing-masing di menu Jadwal.",
+      "pinned": true,
+      "createdAt": "2026-09-01T07:00:00+07:00",
+      "expiresAt": "2026-12-31T23:59:59+07:00"
+    }
+  ]
+}

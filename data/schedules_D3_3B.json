@@ -1,0 +1,22 @@
+{
+  "schema": 2,
+  "semester": "2026/2027-GANJIL",
+  "updatedAt": "2026-09-14T09:36:00+07:00",
+  "data": {
+    "class_name": "D3-3B",
+    "schedule": [
+      {"day":"SELASA","sessions":[
+        {"time":"07.00-10.40","course_code":"25IF3124","course_name":"Pengantar Pengembangan Perangkat Lunak Industri","type":"PR","lecturer_code":"HH","lecturer":"Hashri Hayati, S.T., M.T.","room":"H506-Kelas"},
+        {"time":"13.50-14.40","course_code":"25IF3123","course_name":"Etika Profesi","type":"TE","lecturer_code":"ID","lecturer":"Ida Suhartini, S.Kom., MMSI.","room":"D112-Kelas"}
+      ]},
+      {"day":"RABU","sessions":[
+        {"time":"07.00-14.40","course_code":"25IF3126","course_name":"Best Practices Pengembangan Perangkat Lunak Industri","type":"PR","lecturer_code":"AP","lecturer":"Aprianti Nanda Sari, S.T., M.Kom.","room":"D102-Lab. MT"}
+      ]},
+      {"day":"KAMIS","sessions":[
+        {"time":"07.00-10.40","course_code":"25IF3128","course_name":"Proyek 5 : Studi Kelayakan Pengembangan Perangkat Lunak Aplikasi","type":"PR","lecturer_code":"HH,LH,BW","lecturer":"Hashri Hayati, Lukmannul Hakim Firdaus, Bambang Wisnuadhi","room":"D106-Lab. SDB"},
+        {"time":"10.40-12.20","course_code":"25IF3123","course_name":"Etika Profesi","type":"PR","lecturer_code":"ID","lecturer":"Ida Suhartini, S.Kom., MMSI.","room":"H504-Kelas"},
+        {"time":"16.30-17.20","course_code":"25IF3124","course_name":"Pengantar Pengembangan Perangkat Lunak Industri","type":"TE","lecturer_code":"WW","lecturer":"Wendi Wirasta, S.T., M.T.","room":"D112-Kelas"}
+      ]}
+    ]
+  }
+}

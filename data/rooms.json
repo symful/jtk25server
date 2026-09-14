@@ -1,0 +1,25 @@
+{
+  "schema": 2,
+  "semester": "2026/2027-GANJIL",
+  "updatedAt": "2026-09-14T09:36:00+07:00",
+  "data": [
+    {"id": "D101-Kelas", "name": "D101 Kelas", "type": "kelas"},
+    {"id": "D102-Lab. MT", "name": "D102 Lab. MT", "type": "lab"},
+    {"id": "D105-Kelas", "name": "D105 Kelas", "type": "kelas"},
+    {"id": "D106-Lab. SDB", "name": "D106 Lab. SDB", "type": "lab"},
+    {"id": "D107-Lab. RPL", "name": "D107 Lab. RPL", "type": "lab"},
+    {"id": "D108-Kelas", "name": "D108 Kelas", "type": "kelas"},
+    {"id": "D111-Kelas", "name": "D111 Kelas", "type": "kelas"},
+    {"id": "D112-Kelas", "name": "D112 Kelas", "type": "kelas"},
+    {"id": "D115-Lab. PjBL-1", "name": "D115 Lab. PjBL-1", "type": "lab"},
+    {"id": "D116-Lab. PjBL-2", "name": "D116 Lab. PjBL-2", "type": "lab"},
+    {"id": "D217-Kelas", "name": "D217 Kelas", "type": "kelas"},
+    {"id": "D219-Kelas", "name": "D219 Kelas", "type": "kelas"},
+    {"id": "D223-Kelas", "name": "D223 Kelas", "type": "kelas"},
+    {"id": "D224-Kelas", "name": "D224 Kelas", "type": "kelas"},
+    {"id": "H501-Lab. TI", "name": "H501 Lab. TI", "type": "lab"},
+    {"id": "H502-Lab. AI", "name": "H502 Lab. AI", "type": "lab"},
+    {"id": "H504-Kelas", "name": "H504 Kelas", "type": "kelas"},
+    {"id": "H506-Kelas", "name": "H506 Kelas", "type": "kelas"}
+  ]
+}

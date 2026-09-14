@@ -1,0 +1,34 @@
+{
+  "schema": 2,
+  "semester": "2026/2027-GANJIL",
+  "updatedAt": "2026-09-14T09:36:00+07:00",
+  "data": {
+    "class_name": "D4-3A",
+    "schedule": [
+      {"day":"SENIN","sessions":[
+        {"time":"07.00-08.40","course_code":"25TI3101","course_name":"Komputasi Numerik","type":"TE","lecturer_code":"IA","lecturer":"Dr. Iwan Awaludin, S.T., M.T.","room":"D112-Kelas"},
+        {"time":"08.40-10.40","course_code":"25TI3104","course_name":"Statistika dan Probabilitas","type":"TE","lecturer_code":"NJ","lecturer":"Dr. Nurjannah Syakrani, DRA., M.T.","room":"D112-Kelas"},
+        {"time":"10.40-12.20","course_code":"25TI3103","course_name":"Pengolahan Citra Digital","type":"TE","lecturer_code":"PH","lecturer":"Dr. Priyanto Hidayatullah, ST.,M.Sc.","room":"D217-Kelas"}
+      ]},
+      {"day":"SELASA","sessions":[
+        {"time":"07.00-08.40","course_code":"25TI3101","course_name":"Komputasi Numerik","type":"PR","lecturer_code":"MR","lecturer":"Muhammad Rizqi Sholahuddin, S.Si., M.T.","room":"D102-Lab. MT"},
+        {"time":"08.40-10.40","course_code":"25TI3102","course_name":"Sistem Informasi","type":"TE","lecturer_code":"TR","lecturer":"Dr. Transmissia Semiawan, BSCS., M.IT.","room":"D223-Kelas"},
+        {"time":"10.40-12.20","course_code":"25TI3104","course_name":"Statistika dan Probabilitas","type":"PR","lecturer_code":"HH","lecturer":"Hashri Hayati, S.T., M.T.","room":"H502-Lab. AI"}
+      ]},
+      {"day":"RABU","sessions":[
+        {"time":"08.40-12.20","course_code":"25TI3102","course_name":"Sistem Informasi","type":"PR","lecturer_code":"DC","lecturer":"Djoko Cahyo Utomo L, S.Kom., M.MT.","room":"D107-Lab. RPL"}
+      ]},
+      {"day":"KAMIS","sessions":[
+        {"time":"07.50-08.40","course_code":"25MM0001","course_name":"Kewirausahaan","type":"TE","lecturer_code":"FI","lecturer":"Fitri Diani, S.Si., M.T.","room":"D101-Kelas"},
+        {"time":"08.40-10.40","course_code":"25MM0001","course_name":"Kewirausahaan","type":"PR","lecturer_code":"FI","lecturer":"Fitri Diani, S.Si., M.T.","room":"D101-Kelas"},
+        {"time":"10.40-12.20","course_code":"25TI3106","course_name":"Metodologi Penelitian","type":"TE","lecturer_code":"PH","lecturer":"Dr. Priyanto Hidayatullah, ST.,M.Sc.","room":"D105-Kelas"},
+        {"time":"15.40-17.20","course_code":"25TI3106","course_name":"Metodologi Penelitian","type":"PR","lecturer_code":"IA","lecturer":"Dr. Iwan Awaludin, S.T., M.T.","room":"D106-Lab. SDB"}
+      ]},
+      {"day":"JUMAT","sessions":[
+        {"time":"07.00-08.40","course_code":"25TI3103","course_name":"Pengolahan Citra Digital","type":"PR","lecturer_code":"TG","lecturer":"Trisna Gelar, S.T., M.Kom.","room":"D115-Lab. PjBL-1"},
+        {"time":"08.40-10.40","course_code":"25TI3105","course_name":"Pengembangan Web","type":"TE","lecturer_code":"JO","lecturer":"Joe Lian Min, M.Eng.","room":"D219-Kelas"},
+        {"time":"13.50-17.20","course_code":"25TI3105","course_name":"Pengembangan Web","type":"PR","lecturer_code":"ZA","lecturer":"Zulkifli Arsyad, S.Kom., M.T.","room":"H501-Lab. TI"}
+      ]}
+    ]
+  }
+}

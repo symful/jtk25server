@@ -1,0 +1,9 @@
+{
+  "schema": 2,
+  "semester": "2026/2027-GANJIL",
+  "updatedAt": "2026-09-13T19:30:00+07:00",
+  "data": [
+    {"id": "ann-001", "title": "First", "body": "Body 1", "createdAt": "2026-09-01T07:00:00+07:00"},
+    {"id": "ann-001", "title": "Second", "body": "Body 2", "createdAt": "2026-09-02T07:00:00+07:00"}
+  ]
+}
