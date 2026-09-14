@@ -95,7 +95,7 @@ async function getAccessToken(sa: ServiceAccount): Promise<string> {
 /**
  * Send FCM push to a topic. Fire-and-forget: errors are logged, never thrown.
  */
-async function sendToTopic(
+export async function sendToTopic(
   env: Env,
   topic: string,
   title: string,

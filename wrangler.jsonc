@@ -26,7 +26,10 @@
       "database_name": "jtk25-schedules",
       "database_id": "342e1656-9b73-4bc2-9a71-cf57e11889a6"
     }
-  ]
+  ],
+  "triggers": {
+    "crons": ["0 6 * * *"]
+  }
   // Secrets (not in config — set via `wrangler secret put FIREBASE_SERVICE_ACCOUNT`):
   // - FIREBASE_SERVICE_ACCOUNT: Firebase service account JSON (project_id, client_email, private_key)
 }

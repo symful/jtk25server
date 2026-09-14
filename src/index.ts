@@ -13,6 +13,7 @@ import {
 } from "./data";
 import adminRoutes from "./admin";
 import adminContentRoutes from "./admin_content";
+import { runScheduledNotifications } from "./cron";
 
 type AppEnv = { Bindings: Env };
 
@@ -118,4 +119,9 @@ app.all("*", async (c) => {
   return c.env.ASSETS.fetch(c.req.raw);
 });
 
-export default { fetch: app.fetch };
+export default {
+  fetch: app.fetch,
+  scheduled: async (event: ScheduledEvent, env: Env) => {
+    await runScheduledNotifications(env);
+  },
+};
