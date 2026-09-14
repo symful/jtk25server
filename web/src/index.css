@@ -3,5 +3,11 @@
 @tailwind utilities;
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-200;
+  }
 }

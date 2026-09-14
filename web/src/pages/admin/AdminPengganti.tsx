@@ -94,7 +94,7 @@ export default function AdminPengganti() {
     }
   }
 
-  if (loading) return <div className="p-8 text-center text-gray-400">Memuat...</div>;
+  if (loading) return <div className="p-8 text-center text-gray-400 dark:text-gray-500">Memuat...</div>;
 
   const classList = myClass ? CLASS_LIST.filter((c) => c === myClass) : CLASS_LIST;
   const kindMap: Record<string, string> = { replace: 'Pengganti', add: 'Penambahan', info: 'Info' };
@@ -102,45 +102,45 @@ export default function AdminPengganti() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Kelola Pengganti</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Kelola Pengganti</h1>
         <button onClick={openAdd} className="px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700">
           + Tambah Pengganti
         </button>
       </div>
 
-      {error && <div className="mb-4 p-3 bg-red-50 text-red-600 text-sm rounded-lg">{error}</div>}
+      {error && <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm rounded-lg">{error}</div>}
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b bg-gray-50">
-                <th className="px-4 py-3 text-left font-medium text-gray-500">Kelas</th>
-                <th className="px-4 py-3 text-left font-medium text-gray-500">Tanggal</th>
-                <th className="px-4 py-3 text-left font-medium text-gray-500">Jenis</th>
-                <th className="px-4 py-3 text-left font-medium text-gray-500">Catatan</th>
-                <th className="px-4 py-3 text-right font-medium text-gray-500">Aksi</th>
+              <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                <th className="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Kelas</th>
+                <th className="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Tanggal</th>
+                <th className="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Jenis</th>
+                <th className="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Catatan</th>
+                <th className="px-4 py-3 text-right font-medium text-gray-500 dark:text-gray-400">Aksi</th>
               </tr>
             </thead>
             <tbody>
               {data.map((p) => (
-                <tr key={p.id} className="border-b last:border-0 hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium">{p.class_code.replace(/_/g, '-')}</td>
-                  <td className="px-4 py-3 text-gray-600 whitespace-nowrap">{p.date}</td>
+                <tr key={p.id} className="border-b border-gray-200 dark:border-gray-700 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                  <td className="px-4 py-3 font-medium text-gray-900 dark:text-gray-100">{p.class_code.replace(/_/g, '-')}</td>
+                  <td className="px-4 py-3 text-gray-600 dark:text-gray-400 whitespace-nowrap">{p.date}</td>
                   <td className="px-4 py-3">
-                    <span className="px-2 py-0.5 rounded-full text-xs bg-primary-100 text-primary-700">
+                    <span className="px-2 py-0.5 rounded-full text-xs bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300">
                       {kindMap[p.kind] || p.kind}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-gray-500 max-w-xs truncate">{p.note || '-'}</td>
+                  <td className="px-4 py-3 text-gray-500 dark:text-gray-400 max-w-xs truncate">{p.note || '-'}</td>
                   <td className="px-4 py-3 text-right">
-                    <button onClick={() => openEdit(p)} className="text-xs text-primary-600 hover:underline mr-2">Edit</button>
-                    <button onClick={() => setDeleteId(p.id)} className="text-xs text-red-600 hover:underline">Hapus</button>
+                    <button onClick={() => openEdit(p)} className="text-xs text-primary-600 dark:text-primary-400 hover:underline mr-2">Edit</button>
+                    <button onClick={() => setDeleteId(p.id)} className="text-xs text-red-600 dark:text-red-400 hover:underline">Hapus</button>
                   </td>
                 </tr>
               ))}
               {data.length === 0 && (
-                <tr><td colSpan={5} className="px-4 py-8 text-center text-gray-400">Tidak ada data</td></tr>
+                <tr><td colSpan={5} className="px-4 py-8 text-center text-gray-400 dark:text-gray-500">Tidak ada data</td></tr>
               )}
             </tbody>
           </table>
@@ -151,45 +151,45 @@ export default function AdminPengganti() {
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Kelas *</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kelas *</label>
               <select
                 value={form.class_code}
                 onChange={(e) => setForm({ ...form, class_code: e.target.value })}
                 disabled={!isGlobal}
-                className="w-full px-3 py-2 border rounded-lg disabled:bg-gray-100"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg disabled:bg-gray-100 dark:disabled:bg-gray-700"
               >
                 {classList.map((c) => <option key={c} value={c}>{c.replace(/_/g, '-')}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Tanggal *</label>
-              <input type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} className="w-full px-3 py-2 border rounded-lg" />
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tanggal *</label>
+              <input type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg" />
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Jenis *</label>
-            <select value={form.kind} onChange={(e) => setForm({ ...form, kind: e.target.value as 'replace' | 'add' | 'info' })} className="w-full px-3 py-2 border rounded-lg">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Jenis *</label>
+            <select value={form.kind} onChange={(e) => setForm({ ...form, kind: e.target.value as 'replace' | 'add' | 'info' })} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg">
               <option value="replace">Pengganti</option>
               <option value="add">Penambahan</option>
               <option value="info">Info</option>
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Catatan</label>
-            <input value={form.note} onChange={(e) => setForm({ ...form, note: e.target.value })} className="w-full px-3 py-2 border rounded-lg" />
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Catatan</label>
+            <input value={form.note} onChange={(e) => setForm({ ...form, note: e.target.value })} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Sessions (JSON)</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Sessions (JSON)</label>
             <textarea
               value={form.sessions}
               onChange={(e) => setForm({ ...form, sessions: e.target.value })}
               rows={4}
-              className="w-full px-3 py-2 border rounded-lg font-mono text-xs"
-              placeholder='[{"time":"08:00","course_code":"IF101","course_name":"Basis Data","type":"Teori","lecturer":"Dr. Budi","room":"R.201"}]'
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg font-mono text-xs"
+              placeholder='[{"time":"08:00","course_code":"IF101","course_name":"Basis Data","type":"Teori","lecturer":"Dr. Budi","room":"R.201","mode":"offline"}]'
             />
           </div>
-          <div className="flex justify-end gap-3 pt-4 border-t">
-            <button onClick={() => setModalOpen(false)} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg text-sm">Batal</button>
+          <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <button onClick={() => setModalOpen(false)} className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg text-sm">Batal</button>
             <button onClick={handleSave} disabled={saving} className="px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 disabled:opacity-50">
               {saving ? 'Menyimpan...' : 'Simpan'}
             </button>
@@ -198,9 +198,9 @@ export default function AdminPengganti() {
       </Modal>
 
       <Modal open={deleteId !== null} onClose={() => setDeleteId(null)} title="Hapus Pengganti">
-        <p className="text-sm text-gray-600 mb-4">Yakin ingin menghapus data pengganti ini?</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Yakin ingin menghapus data pengganti ini?</p>
         <div className="flex justify-end gap-3">
-          <button onClick={() => setDeleteId(null)} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg text-sm">Batal</button>
+          <button onClick={() => setDeleteId(null)} className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg text-sm">Batal</button>
           <button onClick={handleDelete} className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700">Hapus</button>
         </div>
       </Modal>

@@ -30,6 +30,7 @@ export interface PenggantiSession {
   type: string;
   lecturer: string;
   room: string;
+  mode?: 'offline' | 'online';
 }
 
 export interface Pengganti {
