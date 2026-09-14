@@ -135,8 +135,6 @@ admin.post("/schedules", async (c) => {
     mode: body.mode ?? 'offline',
   });
 
-  sendScheduleUpdateNotification(c.env, body.class_name);
-
   return c.json({ ok: true, id: newId }, 201);
 });
 
@@ -184,11 +182,6 @@ admin.put("/schedules/:id", async (c) => {
   const success = await updateScheduleRow(c.env.jtk25_schedules, id, updated);
   if (!success) return jsonError(c, 500, "Failed to update schedule");
 
-  sendScheduleUpdateNotification(c.env, existing.class_name);
-  if (updated.class_name !== existing.class_name) {
-    sendScheduleUpdateNotification(c.env, updated.class_name);
-  }
-
   return c.json({ ok: true });
 });
 
@@ -210,9 +203,23 @@ admin.delete("/schedules/:id", async (c) => {
   const success = await deleteScheduleRow(c.env.jtk25_schedules, id);
   if (!success) return jsonError(c, 500, "Failed to delete schedule");
 
-  sendScheduleUpdateNotification(c.env, existing.class_name);
-
   return c.json({ ok: true });
+});
+
+admin.post("/notify", async (c) => {
+  const auth = await authenticate(c);
+  if (!auth.authenticated) return jsonError(c, 401, "Unauthorized");
+
+  const body = await c.req.json<{ classes?: string[] }>();
+  const classes = body.classes ?? [];
+
+  if (classes.length === 0) return jsonError(c, 400, "No classes provided");
+
+  await Promise.all(
+    classes.map((cls) => sendScheduleUpdateNotification(c.env, cls)),
+  );
+
+  return c.json({ ok: true, notified: classes.length });
 });
 
 export default admin;

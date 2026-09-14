@@ -134,10 +134,6 @@ adminContent.post("/events", async (c) => {
     class_name: body.class_name ?? null,
   });
 
-  if (body.class_name) {
-    sendCalendarUpdateNotification(c.env, body.class_name);
-  }
-
   return c.json({ ok: true, id: newId }, 201);
 });
 
@@ -180,10 +176,6 @@ adminContent.put("/events/:id", async (c) => {
 
   if (!success) return jsonError(c, 500, "Failed to update event");
 
-  if (body.class_name || existing.class_name) {
-    sendCalendarUpdateNotification(c.env, body.class_name ?? existing.class_name!);
-  }
-
   return c.json({ ok: true });
 });
 
@@ -204,10 +196,6 @@ adminContent.delete("/events/:id", async (c) => {
 
   const success = await deleteEvent(c.env.jtk25_schedules, id);
   if (!success) return jsonError(c, 500, "Failed to delete event");
-
-  if (existing.class_name) {
-    sendCalendarUpdateNotification(c.env, existing.class_name);
-  }
 
   return c.json({ ok: true });
 });
@@ -402,8 +390,6 @@ adminContent.post("/pengganti", async (c) => {
     sessions: sessionsJson,
   });
 
-  sendPenggantiUpdateNotification(c.env, body.class_code);
-
   return c.json({ ok: true, id: newId }, 201);
 });
 
@@ -448,8 +434,6 @@ adminContent.put("/pengganti/:id", async (c) => {
 
   if (!success) return jsonError(c, 500, "Failed to update pengganti");
 
-  sendPenggantiUpdateNotification(c.env, body.class_code ?? existing.class_code);
-
   return c.json({ ok: true });
 });
 
@@ -470,8 +454,6 @@ adminContent.delete("/pengganti/:id", async (c) => {
 
   const success = await deletePengganti(c.env.jtk25_schedules, id);
   if (!success) return jsonError(c, 500, "Failed to delete pengganti");
-
-  sendScheduleUpdateNotification(c.env, existing.class_code);
 
   return c.json({ ok: true });
 });
@@ -565,6 +547,38 @@ adminContent.delete("/rooms/:id", async (c) => {
   if (!success) return jsonError(c, 500, "Failed to delete room");
 
   return c.json({ ok: true });
+});
+
+adminContent.post("/notify/pengganti", async (c) => {
+  const auth = await authenticate(c);
+  if (!auth.authenticated) return jsonError(c, 401, "Unauthorized");
+
+  const body = await c.req.json<{ classes?: string[] }>();
+  const classes = body.classes ?? [];
+
+  if (classes.length === 0) return jsonError(c, 400, "No classes provided");
+
+  await Promise.all(
+    classes.map((cls) => sendPenggantiUpdateNotification(c.env, cls)),
+  );
+
+  return c.json({ ok: true, notified: classes.length });
+});
+
+adminContent.post("/notify/calendar", async (c) => {
+  const auth = await authenticate(c);
+  if (!auth.authenticated) return jsonError(c, 401, "Unauthorized");
+
+  const body = await c.req.json<{ classes?: string[] }>();
+  const classes = body.classes ?? [];
+
+  if (classes.length === 0) return jsonError(c, 400, "No classes provided");
+
+  await Promise.all(
+    classes.map((cls) => sendCalendarUpdateNotification(c.env, cls)),
+  );
+
+  return c.json({ ok: true, notified: classes.length });
 });
 
 export default adminContent;
