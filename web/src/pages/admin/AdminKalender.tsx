@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import Markdown from 'react-markdown';
-import { apiClient } from '../../api';
+import { apiClient, notifyCalendar } from '../../api';
 import type { CalendarEvent } from '../../types';
 import Modal from '../../components/Modal';
 
@@ -58,6 +58,7 @@ export default function AdminKalender() {
       } else {
         await apiClient.post('/admin/events', form);
       }
+      if (form.class_name) notifyCalendar([form.class_name]);
       setModalOpen(false);
       load();
     } catch (e: any) {

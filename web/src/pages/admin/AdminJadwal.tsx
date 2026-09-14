@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { apiClient } from '../../api';
+import { apiClient, notifySchedule } from '../../api';
 import { useAuth } from '../../contexts/AuthContext';
 import type { SchedulesResponse, ClassSchedule } from '../../types';
 import { DAYS, CLASS_LIST } from '../../types';
@@ -93,6 +93,7 @@ export default function AdminJadwal() {
       } else {
         await apiClient.put(`/admin/schedules/${editingId}`, form);
       }
+      notifySchedule([form.class_name]);
       setModalOpen(false);
       load();
     } catch (e: any) {

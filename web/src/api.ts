@@ -74,3 +74,18 @@ export async function authenticate(password: string): Promise<AuthResult> {
   const res = await apiClient.post<AuthResult>('/admin/auth', { password });
   return res;
 }
+
+export async function notifySchedule(classes: string[]): Promise<void> {
+  if (classes.length === 0) return;
+  await apiClient.post('/admin/notify', { classes });
+}
+
+export async function notifyPengganti(classes: string[]): Promise<void> {
+  if (classes.length === 0) return;
+  await apiClient.post('/admin/notify/pengganti', { classes });
+}
+
+export async function notifyCalendar(classes: string[]): Promise<void> {
+  if (classes.length === 0) return;
+  await apiClient.post('/admin/notify/calendar', { classes });
+}

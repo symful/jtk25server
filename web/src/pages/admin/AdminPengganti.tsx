@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { apiClient } from '../../api';
+import { apiClient, notifyPengganti } from '../../api';
 import { useAuth } from '../../contexts/AuthContext';
 import type { Pengganti } from '../../types';
 import { CLASS_LIST } from '../../types';
@@ -74,6 +74,7 @@ export default function AdminPengganti() {
       } else {
         await apiClient.post('/admin/pengganti', payload);
       }
+      notifyPengganti([form.class_code]);
       setModalOpen(false);
       load();
     } catch (e: any) {
