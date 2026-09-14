@@ -77,6 +77,7 @@ interface D1ScheduleRow {
   lecturer: string;
   room: string;
   slot_order: number;
+  mode: string;
 }
 
 interface ScheduleSession {
@@ -87,6 +88,7 @@ interface ScheduleSession {
   lecturer_code: string;
   lecturer: string;
   room: string;
+  mode: string;
 }
 
 interface DaySchedule {
@@ -111,7 +113,8 @@ export async function getSchedulesFromD1(
   const { results } = await db
     .prepare(
       `SELECT id, class_name, semester, day, time, course_code, course_name,
-              type, lecturer_code, lecturer, room, slot_order
+              type, lecturer_code, lecturer, room, slot_order,
+              COALESCE(mode, 'offline') as mode
        FROM schedules
        ORDER BY class_name, slot_order`,
     )
@@ -127,7 +130,8 @@ export async function getScheduleFromClass(
   const { results } = await db
     .prepare(
       `SELECT id, class_name, semester, day, time, course_code, course_name,
-              type, lecturer_code, lecturer, room, slot_order
+              type, lecturer_code, lecturer, room, slot_order,
+              COALESCE(mode, 'offline') as mode
        FROM schedules
        WHERE class_name = ?
        ORDER BY slot_order`,
@@ -171,8 +175,8 @@ export async function insertScheduleRow(
 ): Promise<number> {
   const stmt = db.prepare(
     `INSERT INTO schedules (class_name, semester, day, time, course_code, course_name,
-                           type, lecturer_code, lecturer, room, slot_order)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                           type, lecturer_code, lecturer, room, slot_order, mode)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
   );
   const result = await stmt
     .bind(
@@ -187,6 +191,7 @@ export async function insertScheduleRow(
       row.lecturer,
       row.room,
       row.slot_order,
+      row.mode ?? 'offline',
     )
     .run();
   return result.meta.last_row_id;
@@ -203,6 +208,7 @@ export async function updateScheduleRow(
        SET class_name = ?, semester = ?, day = ?, time = ?,
            course_code = ?, course_name = ?, type = ?,
            lecturer_code = ?, lecturer = ?, room = ?, slot_order = ?,
+           mode = ?,
            updated_at = datetime('now')
        WHERE id = ?`,
     )
@@ -218,6 +224,7 @@ export async function updateScheduleRow(
       row.lecturer,
       row.room,
       row.slot_order,
+      row.mode ?? 'offline',
       id,
     )
     .run();
@@ -689,6 +696,7 @@ function groupScheduleRows(rows: D1ScheduleRow[]): {
         lecturer_code: row.lecturer_code,
         lecturer: row.lecturer,
         room: row.room,
+        mode: row.mode ?? 'offline',
       };
       const existing = dayMap.get(row.day);
       if (existing) {

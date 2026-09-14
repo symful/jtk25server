@@ -6,6 +6,7 @@ export interface ScheduleSession {
   lecturer_code: string;
   lecturer: string;
   room: string;
+  mode?: string;
 }
 
 export interface DaySchedule {

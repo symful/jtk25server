@@ -114,6 +114,7 @@ admin.post("/schedules", async (c) => {
     class_name: string; semester: string; day: string; time: string;
     course_code: string; course_name: string; type: string;
     lecturer_code: string; lecturer: string; room: string; slot_order?: number;
+    mode?: string;
   }>();
 
   if (auth.scope !== "global") {
@@ -131,6 +132,7 @@ admin.post("/schedules", async (c) => {
     time: body.time, course_code: body.course_code, course_name: body.course_name,
     type: body.type, lecturer_code: body.lecturer_code, lecturer: body.lecturer ?? "",
     room: body.room, slot_order: body.slot_order ?? 0,
+    mode: body.mode ?? 'offline',
   });
 
   sendScheduleUpdateNotification(c.env, body.class_name);
@@ -157,6 +159,7 @@ admin.put("/schedules/:id", async (c) => {
     class_name?: string; semester?: string; day?: string; time?: string;
     course_code?: string; course_name?: string; type?: string;
     lecturer_code?: string; lecturer?: string; room?: string; slot_order?: number;
+    mode?: string;
   }>();
 
   if (auth.scope !== "global" && body.class_name) {
@@ -175,6 +178,7 @@ admin.put("/schedules/:id", async (c) => {
     lecturer: body.lecturer ?? existing.lecturer,
     room: body.room ?? existing.room,
     slot_order: body.slot_order ?? existing.slot_order,
+    mode: body.mode ?? existing.mode ?? 'offline',
   };
 
   const success = await updateScheduleRow(c.env.jtk25_schedules, id, updated);
