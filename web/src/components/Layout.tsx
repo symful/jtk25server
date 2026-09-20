@@ -152,7 +152,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 mt-auto transition-colors">
         <div className="max-w-7xl mx-auto px-4 py-6 text-center text-sm text-gray-400 dark:text-gray-500">
-          JTK 25 &copy; {new Date().getFullYear()} &middot; Politeknik Negeri Bandung
+          JTK 25 &copy; {new Date().getFullYear()} &middot; Politeknik Negeri Bandung &middot;{' '}
+          <Link to="/privacy" className="hover:underline">Kebijakan Privasi</Link>
         </div>
       </footer>
     </div>

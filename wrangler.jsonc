@@ -3,6 +3,10 @@
   "main": "src/index.ts",
   "name": "jtk25server",
   "compatibility_date": "2026-08-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true
+  },
   "routes": [
     {
       "pattern": "jtk25.my.id",
@@ -14,7 +18,7 @@
     }
   ],
   "assets": {
-    "directory": "web/dist",
+    "directory": "./web/dist",
     "binding": "ASSETS",
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "single-page-application",
@@ -28,7 +32,7 @@
     }
   ],
   "triggers": {
-    "crons": ["*/15 * * * 1-5"]
+    "crons": ["*/15 * * * *"]
   }
   // Secrets (not in config — set via `wrangler secret put FIREBASE_SERVICE_ACCOUNT`):
   // - FIREBASE_SERVICE_ACCOUNT: Firebase service account JSON (project_id, client_email, private_key)

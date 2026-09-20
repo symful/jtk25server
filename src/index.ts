@@ -14,6 +14,7 @@ import {
 import adminRoutes from "./admin";
 import adminContentRoutes from "./admin_content";
 import { runScheduledNotifications } from "./cron";
+import { iidSubscribe, iidUnsubscribe } from "./fcm";
 
 type AppEnv = { Bindings: Env };
 
@@ -101,6 +102,20 @@ app.get("/api/v1/rooms", async (c) => {
 });
 
 app.get("/api/version", (c) => c.text("2.0"));
+
+app.post("/api/v1/fcm/subscribe", async (c) => {
+  const { token, topic } = await c.req.json<{ token: string; topic: string }>();
+  if (!token || !topic) return c.json({ error: "token and topic required" }, 400);
+  const ok = await iidSubscribe(c.env, token, topic);
+  return ok ? c.json({ ok: true }) : c.json({ error: "subscribe failed" }, 500);
+});
+
+app.post("/api/v1/fcm/unsubscribe", async (c) => {
+  const { token, topic } = await c.req.json<{ token: string; topic: string }>();
+  if (!token || !topic) return c.json({ error: "token and topic required" }, 400);
+  const ok = await iidUnsubscribe(c.env, token, topic);
+  return ok ? c.json({ ok: true }) : c.json({ error: "unsubscribe failed" }, 500);
+});
 
 app.get("/api/schedules", async (c) => {
   const { semester, classes } = await getSchedulesFromD1(c.env.jtk25_schedules);

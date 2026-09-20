@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { apiClient } from '../api';
 import type { SchedulesResponse, ClassSchedule } from '../types';
 
+const STORAGE_KEY = 'jtk25_selected_class';
+
 export default function Jadwal() {
   const [data, setData] = useState<SchedulesResponse | null>(null);
-  const [selectedClass, setSelectedClass] = useState('');
+  const [selectedClass, setSelectedClass] = useState(() => localStorage.getItem(STORAGE_KEY) ?? '');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -12,8 +14,13 @@ export default function Jadwal() {
     apiClient.get<SchedulesResponse>('/schedules')
       .then((sched) => {
         setData(sched);
-        const year2 = sched.classes.filter((c) => /[_-]2[A-Z]/.test(c.class_name));
-        if (year2.length > 0) setSelectedClass(year2[0].class_name);
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored && sched.classes.some((c) => c.class_name === stored)) {
+          setSelectedClass(stored);
+        } else {
+          const year2 = sched.classes.filter((c) => /[_-]2[A-Z]/.test(c.class_name));
+          if (year2.length > 0) setSelectedClass(year2[0].class_name);
+        }
       })
       .catch(() => setError('Gagal memuat jadwal'))
       .finally(() => setLoading(false));
@@ -35,8 +42,11 @@ export default function Jadwal() {
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
         <select
           value={selectedClass}
-          onChange={(e) => setSelectedClass(e.target.value)}
-          className="px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          onChange={(e) => {
+            setSelectedClass(e.target.value);
+            localStorage.setItem(STORAGE_KEY, e.target.value);
+          }}
+          className="w-full sm:w-auto px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
         >
           {classes.map((c) => (
             <option key={c.class_name} value={c.class_name}>

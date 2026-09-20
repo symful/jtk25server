@@ -8,6 +8,7 @@ import Jadwal from './pages/Jadwal';
 import KalenderPage from './pages/Kalender';
 import PengumumanPage from './pages/Pengumuman';
 import RuanganPage from './pages/Ruangan';
+import Privacy from './pages/Privacy';
 
 import Login from './pages/admin/Login';
 import AdminDashboard from './pages/admin/Dashboard';
@@ -84,6 +85,7 @@ export default function App() {
           <Route path="/kalender" element={<Layout><KalenderPage /></Layout>} />
           <Route path="/pengumuman" element={<Layout><PengumumanPage /></Layout>} />
           <Route path="/ruangan" element={<Layout><RuanganPage /></Layout>} />
+          <Route path="/privacy" element={<Layout><Privacy /></Layout>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

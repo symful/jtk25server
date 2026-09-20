@@ -151,4 +151,49 @@ export async function sendCalendarUpdateNotification(env: Env, className: string
   await sendToTopic(env, classTopic(className), "Kalender Diperbarui", `Kalender kelas ${className} telah diperbarui.`, { type: "calendar_update", className });
 }
 
+export async function iidSubscribe(env: Env, token: string, topic: string): Promise<boolean> {
+  try {
+    const sa: ServiceAccount = JSON.parse(env.FIREBASE_SERVICE_ACCOUNT);
+    const accessToken = await getAccessToken(sa);
+    const resp = await fetch(`https://iid.googleapis.com/iid/v1/${token}/rel/topics/${topic}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+    if (!resp.ok) {
+      const text = await resp.text();
+      console.error(`IID subscribe failed (${resp.status}) for ${topic}: ${text}`);
+      return false;
+    }
+    console.log(`IID subscribed to ${topic}`);
+    return true;
+  } catch (err) {
+    console.error("IID subscribe error:", err);
+    return false;
+  }
+}
+
+export async function iidUnsubscribe(env: Env, token: string, topic: string): Promise<boolean> {
+  try {
+    const sa: ServiceAccount = JSON.parse(env.FIREBASE_SERVICE_ACCOUNT);
+    const accessToken = await getAccessToken(sa);
+    const resp = await fetch(`https://iid.googleapis.com/iid/v1/${token}/rel/topics/${topic}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!resp.ok) {
+      const text = await resp.text();
+      console.error(`IID unsubscribe failed (${resp.status}) for ${topic}: ${text}`);
+      return false;
+    }
+    console.log(`IID unsubscribed from ${topic}`);
+    return true;
+  } catch (err) {
+    console.error("IID unsubscribe error:", err);
+    return false;
+  }
+}
+
 
