@@ -104,12 +104,10 @@ export default function Privacy() {
         <Section title="9. Kontak">
           <p>
             Jika pengguna memiliki pertanyaan atau masalah terkait Kebijakan Privasi ini, 
-            silakan hubungi Program Studi Teknik Komputer dan Informatika, Politeknik Negeri Bandung 
-            melalui:
+            silakan hubungi melalui:
           </p>
           <ul className="list-disc pl-5 mt-2 space-y-1">
-            <li>Email: <span className="text-indigo-600 dark:text-indigo-400">tkjtk@polban.ac.id</span></li>
-            <li>Website: <span className="text-indigo-600 dark:text-indigo-400">https://tkj.polban.ac.id</span></li>
+            <li>Email: <span className="text-indigo-600 dark:text-indigo-400">kemalardian17@gmail.com</span></li>
           </ul>
         </Section>
       </div>
