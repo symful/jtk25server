@@ -63,13 +63,22 @@ function classTopic(className: string): string {
   return `jtk25_${sanitizeTopic(className)}`;
 }
 
+/** Extract the start time from a range like "07.00-14.40" → "07.00", or bare "07.00" → "07.00". */
+function startTime(time: string): string {
+  return time.split("-")[0];
+}
+
+/** Parse "HH.MM" (or the start of "HH.MM-HH.MM") into minutes since midnight. Returns NaN on unparseable input. */
 function timeToMinutes(time: string): number {
-  const [h, m] = time.split(".").map(Number);
-  return h * 60 + m;
+  const start = startTime(time);
+  const [h, m] = start.split(".").map(Number);
+  if (Number.isNaN(h)) return NaN;
+  return h * 60 + (m || 0);
 }
 
 function isWithinMinutes(scheduleTime: string, nowMinutes: number, beforeMin: number): boolean {
   const schedMin = timeToMinutes(scheduleTime);
+  if (Number.isNaN(schedMin)) return false;
   return schedMin > nowMinutes && schedMin <= nowMinutes + beforeMin;
 }
 
@@ -78,7 +87,7 @@ function formatSessionLines(
   maxLines: number,
 ): string {
   const lines = sessions.slice(0, maxLines).map(
-    (s) => `${s.course_name} — ${s.time} di ${s.room}`,
+    (s) => `${s.course_name} — ${startTime(s.time)} di ${s.room}`,
   );
   const remaining = sessions.length - maxLines;
   if (remaining > 0) lines.push(`+${remaining} lagi`);
@@ -238,7 +247,7 @@ async function notifyUpcomingSchedules(
         await markSent(env, key);
 
         const title = "Kelas Sebentar Lagi";
-        const body = `${session.course_name} (${session.type}) — ${session.time} di ${session.room}`;
+        const body = `${session.course_name} (${session.type}) — ${startTime(session.time)} di ${session.room}`;
         await sendToTopic(env, classTopic(cls.class_name), title, body, {
           type: "class_incoming", classCode: cls.class_name,
           course: session.course_code, time: session.time, room: session.room,
@@ -271,7 +280,7 @@ async function notifyUpcomingPengganti(
 
         const title = "Kelas Pengganti";
         const notePart = entry.note ? ` (${entry.note})` : "";
-        const body = `${session.course_name} — ${session.time} di ${session.room}${notePart}`;
+        const body = `${session.course_name} — ${startTime(session.time)} di ${session.room}${notePart}`;
         await sendToTopic(env, classTopic(entry.class_code), title, body, {
           type: "pengganti_incoming", classCode: entry.class_code,
           time: session.time, room: session.room,

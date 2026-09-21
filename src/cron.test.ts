@@ -115,13 +115,14 @@ describe("cron dedup + copy", () => {
   });
 
   it("Scenario A: upcoming class dedup — one send per two runs", async () => {
-    vi.setSystemTime(new Date("2026-09-21T00:25:00Z")); // 07:25 WIB Monday
+    // 07:25 WIB Monday — upcoming path (hourNum=7)
+    vi.setSystemTime(new Date("2026-09-21T00:25:00Z"));
 
     const { env } = createMockEnv(
       [
         {
           id: 1, class_name: "D3-3A", semester: "2025/2026",
-          day: "SENIN", time: "07.50",
+          day: "SENIN", time: "07.50-08.40",
           course_code: "TI-251", course_name: "Pemrograman Web",
           type: "TE", lecturer_code: "MK01", lecturer: "Budi",
           room: "D108", slot_order: 1, mode: "offline",
@@ -138,14 +139,15 @@ describe("cron dedup + copy", () => {
     expect(sendCalls.length).toBe(1);
   });
 
-  it("Scenario B: copy contains matkul + type + time + room", async () => {
-    vi.setSystemTime(new Date("2026-09-21T00:25:00Z")); // 07:25 WIB Monday
+  it("Scenario B: copy contains matkul + type + start time + room", async () => {
+    // 07:25 WIB Monday
+    vi.setSystemTime(new Date("2026-09-21T00:25:00Z"));
 
     const { env } = createMockEnv(
       [
         {
           id: 1, class_name: "D3-3A", semester: "2025/2026",
-          day: "SENIN", time: "07.50",
+          day: "SENIN", time: "07.50-08.40",
           course_code: "TI-251", course_name: "Pemrograman Web",
           type: "TE", lecturer_code: "MK01", lecturer: "Budi",
           room: "D108", slot_order: 1, mode: "offline",
@@ -163,7 +165,8 @@ describe("cron dedup + copy", () => {
   });
 
   it("Scenario C: upcoming event dedup across two runs", async () => {
-    vi.setSystemTime(new Date("2026-09-21T00:25:00Z")); // 07:25 WIB Monday
+    // 07:25 WIB Monday
+    vi.setSystemTime(new Date("2026-09-21T00:25:00Z"));
 
     const { env } = createMockEnv(
       [],
@@ -188,14 +191,15 @@ describe("cron dedup + copy", () => {
     expect(sendCalls.length).toBe(1);
   });
 
-  it("Scenario D: morning digest dedup across two runs same day", async () => {
-    vi.setSystemTime(new Date("2026-09-20T23:00:00Z")); // 06:00 WIB Monday
+  it("Scenario D: morning digest dedup with range-format times", async () => {
+    // 06:00 WIB Monday — morning path (hourNum=6)
+    vi.setSystemTime(new Date("2026-09-20T23:00:00Z"));
 
     const { env } = createMockEnv(
       [
         {
           id: 1, class_name: "D3-3A", semester: "2025/2026",
-          day: "SENIN", time: "07.00",
+          day: "SENIN", time: "07.00-14.40",
           course_code: "TI-251", course_name: "Pemrograman Web",
           type: "TE", lecturer_code: "MK01", lecturer: "Budi",
           room: "D108", slot_order: 1, mode: "offline",
@@ -214,35 +218,36 @@ describe("cron dedup + copy", () => {
     expect(sendCalls.length).toBe(1);
   });
 
-  it("morning digest shows first 3 sessions + N lagi", async () => {
-    vi.setSystemTime(new Date("2026-09-20T23:00:00Z")); // 06:00 WIB Monday
+  it("morning digest shows first 3 sessions + N lagi (range format)", async () => {
+    // 06:00 WIB Monday
+    vi.setSystemTime(new Date("2026-09-20T23:00:00Z"));
 
     const { env } = createMockEnv(
       [
         {
           id: 1, class_name: "D3-3A", semester: "2025/2026",
-          day: "SENIN", time: "07.00",
+          day: "SENIN", time: "07.00-14.40",
           course_code: "TI-251", course_name: "Pemrograman Web",
           type: "TE", lecturer_code: "MK01", lecturer: "Budi",
           room: "D108", slot_order: 1, mode: "offline",
         },
         {
           id: 2, class_name: "D3-3A", semester: "2025/2026",
-          day: "SENIN", time: "08.00",
+          day: "SENIN", time: "08.00-10.40",
           course_code: "TI-252", course_name: "Basis Data",
           type: "PR", lecturer_code: "MK02", lecturer: "Sari",
           room: "Lab3", slot_order: 2, mode: "offline",
         },
         {
           id: 3, class_name: "D3-3A", semester: "2025/2026",
-          day: "SENIN", time: "09.00",
+          day: "SENIN", time: "09.00-12.00",
           course_code: "TI-253", course_name: "Jaringan Komputer",
           type: "TE", lecturer_code: "MK03", lecturer: "Andi",
           room: "D201", slot_order: 3, mode: "offline",
         },
         {
           id: 4, class_name: "D3-3A", semester: "2025/2026",
-          day: "SENIN", time: "10.00",
+          day: "SENIN", time: "10.00-11.30",
           course_code: "TI-254", course_name: "Kecerdasan Buatan",
           type: "TE", lecturer_code: "MK04", lecturer: "Rina",
           room: "D301", slot_order: 4, mode: "offline",
@@ -262,11 +267,12 @@ describe("cron dedup + copy", () => {
     );
   });
 
-  it("upcoming pengganti uses note in body", async () => {
-    vi.setSystemTime(new Date("2026-09-21T00:25:00Z")); // 07:25 WIB Monday
+  it("upcoming pengganti uses note in body (range format)", async () => {
+    // 07:25 WIB Monday
+    vi.setSystemTime(new Date("2026-09-21T00:25:00Z"));
 
     const penggantiSessions = JSON.stringify([
-      { course_name: "Pemrograman Web", time: "07.50", room: "D108", type: "TE" },
+      { course_name: "Pemrograman Web", time: "07.50-08.40", room: "D108", type: "TE" },
     ]);
 
     const { env } = createMockEnv(
@@ -292,7 +298,8 @@ describe("cron dedup + copy", () => {
   });
 
   it("class-scoped event goes to class topic, global to jtk25_global", async () => {
-    vi.setSystemTime(new Date("2026-09-21T00:25:00Z")); // 07:25 WIB Monday
+    // 07:25 WIB Monday
+    vi.setSystemTime(new Date("2026-09-21T00:25:00Z"));
 
     const { env } = createMockEnv(
       [],
@@ -321,5 +328,57 @@ describe("cron dedup + copy", () => {
     const globalEvent = sendCalls.find((c) => c.data.eventId === "2");
     expect(classEvent!.topic).toBe("jtk25_D3-3A");
     expect(globalEvent!.topic).toBe("jtk25_global");
+  });
+
+  it("REGRESSION: range-format session '08.00-10.40' fires in upcoming path and shows start time", async () => {
+    vi.setSystemTime(new Date("2026-09-21T00:35:00Z")); // 07:35 WIB Monday (hourNum=7)
+
+    const { env } = createMockEnv(
+      [
+        {
+          id: 1, class_name: "D3-3A", semester: "2025/2026",
+          day: "SENIN", time: "08.00-10.40",
+          course_code: "TI-251", course_name: "Pemrograman Web",
+          type: "TE", lecturer_code: "MK01", lecturer: "Budi",
+          room: "D108", slot_order: 1, mode: "offline",
+        },
+      ],
+      [],
+      [],
+    );
+
+    await runScheduledNotifications(env);
+    expect(sendCalls.length).toBe(1);
+    expect(sendCalls[0].title).toBe("Kelas Sebentar Lagi");
+    expect(sendCalls[0].body).toBe("Pemrograman Web (TE) — 08.00 di D108");
+
+    await runScheduledNotifications(env);
+    expect(sendCalls.length).toBe(1);
+  });
+
+  it("REGRESSION: range-format pengganti session fires in upcoming path", async () => {
+    vi.setSystemTime(new Date("2026-09-21T00:25:00Z")); // 07:25 WIB Monday
+
+    const penggantiSessions = JSON.stringify([
+      { course_name: "Etika Profesi", time: "07.50-08.40", room: "H504-Kelas", type: "PR" },
+    ]);
+
+    const { env } = createMockEnv(
+      [],
+      [],
+      [
+        {
+          id: 1, ext_id: "pg1", class_code: "D3-3A",
+          date: "2026-09-21", kind: "replace",
+          note: "Dosen sakit", sessions: penggantiSessions,
+          created_at: "", updated_at: "",
+        },
+      ],
+    );
+
+    await runScheduledNotifications(env);
+    const penggantiCall = sendCalls.find((c) => c.data.type === "pengganti_incoming");
+    expect(penggantiCall).toBeDefined();
+    expect(penggantiCall!.body).toBe("Etika Profesi — 07.50 di H504-Kelas (Dosen sakit)");
   });
 });
