@@ -81,6 +81,7 @@ interface D1ScheduleRow {
 }
 
 interface ScheduleSession {
+  id: number;
   time: string;
   course_code: string;
   course_name: string;
@@ -689,6 +690,7 @@ function groupScheduleRows(rows: D1ScheduleRow[]): {
     const dayMap = new Map<string, ScheduleSession[]>();
     for (const row of classRows) {
       const session: ScheduleSession = {
+        id: row.id,
         time: row.time,
         course_code: row.course_code,
         course_name: row.course_name,
