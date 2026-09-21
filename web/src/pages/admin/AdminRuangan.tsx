@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { apiClient } from '../../api';
 import type { Room } from '../../types';
 import Modal from '../../components/Modal';
+import { showToast } from '../../components/Toast';
+import { required, validate, FieldError, hasError } from '../../lib/validation';
 
 const EMPTY: { name: string; type: 'kelas' | 'lab' } = { name: '', type: 'kelas' };
 
@@ -14,6 +16,7 @@ export default function AdminRuangan() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [deleteId, setDeleteId] = useState<number | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string | null>>({});
 
   const load = useCallback(async () => {
     try {
@@ -31,25 +34,38 @@ export default function AdminRuangan() {
   function openAdd() {
     setEditing(null);
     setForm(EMPTY);
+    setFieldErrors({});
     setModalOpen(true);
   }
 
   function openEdit(r: Room) {
     setEditing(r);
     setForm({ name: r.name, type: r.type });
+    setFieldErrors({});
     setModalOpen(true);
   }
 
+  function validateForm(): boolean {
+    const errors: Record<string, string | null> = {
+      name: validate(form.name, 'Nama ruangan', required),
+    };
+    setFieldErrors(errors);
+    return !Object.values(errors).some(hasError);
+  }
+
   async function handleSave() {
+    if (!validateForm()) return;
     setSaving(true);
     setError('');
     try {
+      const payload = { name: form.name.trim(), type: form.type };
       if (editing) {
-        await apiClient.put(`/admin/rooms/${editing.id}`, form);
+        await apiClient.put(`/admin/rooms/${editing.id}`, payload);
       } else {
-        await apiClient.post('/admin/rooms', form);
+        await apiClient.post('/admin/rooms', payload);
       }
       setModalOpen(false);
+      showToast(editing ? 'Ruangan berhasil diperbarui' : 'Ruangan berhasil ditambahkan', 'success');
       load();
     } catch (e: any) {
       setError(e.body?.error || 'Gagal menyimpan');
@@ -63,6 +79,7 @@ export default function AdminRuangan() {
     try {
       await apiClient.delete(`/admin/rooms/${deleteId}`);
       setDeleteId(null);
+      showToast('Ruangan berhasil dihapus', 'success');
       load();
     } catch (e: any) {
       setError(e.body?.error || 'Gagal menghapus');
@@ -80,7 +97,16 @@ export default function AdminRuangan() {
         </button>
       </div>
 
-      {error && <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm rounded-lg">{error}</div>}
+      {error && (
+        <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm rounded-lg flex items-center justify-between">
+          <span>{error}</span>
+          <button onClick={() => setError('')} className="ml-2 text-red-400 hover:text-red-600 dark:hover:text-red-300">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      )}
 
       <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
         <div className="overflow-x-auto">
@@ -122,6 +148,7 @@ export default function AdminRuangan() {
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama *</label>
             <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg" placeholder="R.201" />
+            <FieldError error={fieldErrors.name} />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tipe *</label>

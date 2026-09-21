@@ -52,6 +52,7 @@ export interface Announcement {
   title: string;
   body: string;
   pinned: number;
+  class_name: string | null;
   created_at: string;
   expires_at: string | null;
 }
