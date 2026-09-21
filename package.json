@@ -6,7 +6,8 @@
     "build:web": "cd web && npm install && npm run build",
     "deploy": "npm run build:web && wrangler deploy",
     "validate": "tsx tools/validate.ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "db:migrate": "wrangler d1 execute jtk25-schedules --file migrations/0003_notification_sent_log.sql --local"
   },
   "dependencies": {
     "hono": "^4.13.7"
