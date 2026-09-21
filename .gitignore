@@ -8,3 +8,5 @@ client_build/
 .env
 web/public/firebase-config.js
 web/tsconfig.tsbuildinfo
+
+admin-passwords-*.txt
