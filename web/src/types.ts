@@ -68,6 +68,7 @@ export interface CalendarEvent {
   location: string | null;
   category: string | null;
   class_name: string | null;
+  collection_time: string | null;
   created_at: string;
   updated_at: string;
 }

@@ -111,6 +111,7 @@ adminContent.post("/events", async (c) => {
     ext_id?: string; title: string; description?: string;
     date: string; end_date: string; location?: string;
     category?: string; class_name?: string;
+    collection_time?: string;
   }>();
 
   if (!body.title || !body.date || !body.end_date) {
@@ -132,6 +133,7 @@ adminContent.post("/events", async (c) => {
     location: body.location ?? null,
     category: body.category ?? null,
     class_name: body.class_name ?? null,
+    collection_time: body.collection_time ?? null,
   });
 
   return c.json({ ok: true, id: newId }, 201);
@@ -156,6 +158,7 @@ adminContent.put("/events/:id", async (c) => {
     ext_id?: string; title?: string; description?: string;
     date?: string; end_date?: string; location?: string;
     category?: string; class_name?: string;
+    collection_time?: string;
   }>();
 
   if (auth.scope !== "global" && body.class_name) {
@@ -172,6 +175,7 @@ adminContent.put("/events/:id", async (c) => {
     location: body.location,
     category: body.category,
     class_name: body.class_name,
+    collection_time: body.collection_time,
   });
 
   if (!success) return jsonError(c, 500, "Failed to update event");

@@ -8,8 +8,9 @@ import Combobox from '../../components/Combobox';
 import { showToast } from '../../components/Toast';
 import { required, validate, FieldError, hasError } from '../../lib/validation';
 import NotifyPrompt from '../../components/NotifyPrompt';
+import { useAuth } from '../../contexts/AuthContext';
 
-const EMPTY = { title: '', description: '', date: '', end_date: '', location: '', category: '', class_name: '' };
+const EMPTY = { title: '', description: '', date: '', end_date: '', location: '', category: '', class_name: '', collection_time: '' };
 
 const CLASS_OPTIONS = [
   { value: '', label: 'Semua / Global' },
@@ -29,6 +30,7 @@ function formatDateID(dateStr: string): string {
 }
 
 export default function AdminKalender() {
+  const { scope, isGlobal } = useAuth();
   const [data, setData] = useState<CalendarEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
@@ -55,7 +57,7 @@ export default function AdminKalender() {
 
   function openAdd() {
     setEditing(null);
-    setForm(EMPTY);
+    setForm({ ...EMPTY, class_name: isGlobal ? '' : (scope?.replace('class:', '') ?? '') });
     setFieldErrors({});
     setModalOpen(true);
   }
@@ -70,6 +72,7 @@ export default function AdminKalender() {
       location: e.location || '',
       category: e.category || '',
       class_name: e.class_name || '',
+      collection_time: e.collection_time || '',
     });
     setFieldErrors({});
     setModalOpen(true);
@@ -78,8 +81,7 @@ export default function AdminKalender() {
   function validateForm(): boolean {
     const errors: Record<string, string | null> = {
       title: validate(form.title, 'Judul', required),
-      date: validate(form.date, 'Tanggal mulai', required),
-      end_date: validate(form.end_date, 'Tanggal akhir', required),
+      date: validate(form.date, 'Tanggal tenggat', required),
     };
     setFieldErrors(errors);
     return !Object.values(errors).some(hasError);
@@ -96,7 +98,7 @@ export default function AdminKalender() {
         await apiClient.post('/admin/events', form);
       }
       setModalOpen(false);
-      showToast(editing ? 'Event berhasil diperbarui' : 'Event berhasil ditambahkan', 'success');
+      showToast(editing ? 'Tugas berhasil diperbarui' : 'Tugas berhasil ditambahkan', 'success');
       load();
       setNotifyPromptClass(form.class_name);
     } catch (e: any) {
@@ -111,7 +113,7 @@ export default function AdminKalender() {
     try {
       await apiClient.delete(`/admin/events/${deleteId}`);
       setDeleteId(null);
-      showToast('Event berhasil dihapus', 'success');
+      showToast('Tugas berhasil dihapus', 'success');
       load();
     } catch (e: any) {
       setError(e.body?.error || 'Gagal menghapus');
@@ -123,9 +125,9 @@ export default function AdminKalender() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Kelola Kalender</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Kelola Tugas</h1>
         <button onClick={openAdd} className="px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700">
-          + Tambah Event
+          + Tambah Tugas
         </button>
       </div>
 
@@ -146,7 +148,7 @@ export default function AdminKalender() {
             <thead>
               <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
                 <th className="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Judul</th>
-                <th className="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Tanggal</th>
+                <th className="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Tenggat</th>
                 <th className="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Kelas</th>
                 <th className="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Lokasi</th>
                 <th className="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Kategori</th>
@@ -159,7 +161,9 @@ export default function AdminKalender() {
                   <td className="px-4 py-3">
                     <div className="font-medium text-gray-900 dark:text-gray-100">{e.title}</div>
                   </td>
-                  <td className="px-4 py-3 text-gray-600 dark:text-gray-400 whitespace-nowrap">{formatDateID(e.date)}</td>
+                  <td className="px-4 py-3 text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                    {formatDateID(e.date)}{e.collection_time ? ` ${e.collection_time}` : ''}
+                  </td>
                   <td className="px-4 py-3 text-gray-600 dark:text-gray-400">
                     {e.class_name ? <span className="px-2 py-0.5 rounded-full text-xs bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">{e.class_name.replace(/_/g, '-')}</span> : <span className="text-gray-400 dark:text-gray-500">Global</span>}
                   </td>
@@ -181,7 +185,7 @@ export default function AdminKalender() {
         </div>
       </div>
 
-      <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editing ? 'Edit Event' : 'Tambah Event'} size="lg">
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={editing ? 'Edit Tugas' : 'Tambah Tugas'} size="lg">
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Judul *</label>
@@ -200,19 +204,18 @@ export default function AdminKalender() {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tanggal Mulai *</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tanggal Tenggat *</label>
               <input type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg" />
               <FieldError error={fieldErrors.date} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tanggal Akhir *</label>
-              <input type="date" value={form.end_date} onChange={(e) => setForm({ ...form, end_date: e.target.value })} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg" />
-              <FieldError error={fieldErrors.end_date} />
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Jam Pengumpulan</label>
+              <input type="time" value={form.collection_time} onChange={(e) => setForm({ ...form, collection_time: e.target.value })} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg" />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Lokasi</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Lokasi Pengumpulan</label>
               <input value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg" />
             </div>
             <div>
@@ -220,10 +223,12 @@ export default function AdminKalender() {
               <input value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg" />
             </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kelas</label>
-            <Combobox value={form.class_name} onChange={(v) => setForm({ ...form, class_name: v })} options={CLASS_OPTIONS} placeholder="Semua / Global" />
-          </div>
+          {isGlobal && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kelas</label>
+              <Combobox value={form.class_name} onChange={(v) => setForm({ ...form, class_name: v })} options={CLASS_OPTIONS} placeholder="Semua / Global" />
+            </div>
+          )}
           <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
             <button onClick={() => setModalOpen(false)} className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg text-sm">Batal</button>
             <button onClick={handleSave} disabled={saving} className="px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 disabled:opacity-50">
@@ -233,8 +238,8 @@ export default function AdminKalender() {
         </div>
       </Modal>
 
-      <Modal open={deleteId !== null} onClose={() => setDeleteId(null)} title="Hapus Event">
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Yakin ingin menghapus event ini?</p>
+      <Modal open={deleteId !== null} onClose={() => setDeleteId(null)} title="Hapus Tugas">
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Yakin ingin menghapus tugas ini?</p>
         <div className="flex justify-end gap-3">
           <button onClick={() => setDeleteId(null)} className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg text-sm">Batal</button>
           <button onClick={handleDelete} className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700">Hapus</button>

@@ -3,7 +3,7 @@ import { useAuth } from '../../contexts/AuthContext';
 
 const sections = [
   { path: '/admin/jadwal', title: 'Jadwal', desc: 'Kelola jadwal kuliah', color: 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400' },
-  { path: '/admin/kalender', title: 'Kalender', desc: 'Kelola event & kegiatan', color: 'bg-purple-50 text-purple-600 dark:bg-purple-900/20 dark:text-purple-400' },
+  { path: '/admin/kalender', title: 'Tugas', desc: 'Kelola tugas & pengumpulan', color: 'bg-purple-50 text-purple-600 dark:bg-purple-900/20 dark:text-purple-400' },
   { path: '/admin/pengumuman', title: 'Pengumuman', desc: 'Kelola pengumuman', color: 'bg-yellow-50 text-yellow-600 dark:bg-yellow-900/20 dark:text-yellow-400' },
   { path: '/admin/pengganti', title: 'Pengganti', desc: 'Kelola kelas pengganti', color: 'bg-orange-50 text-orange-600 dark:bg-orange-900/20 dark:text-orange-400' },
   { path: '/admin/ruangan', title: 'Ruangan', desc: 'Kelola data ruangan', color: 'bg-cyan-50 text-cyan-600 dark:bg-cyan-900/20 dark:text-cyan-400' },

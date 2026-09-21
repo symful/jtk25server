@@ -182,7 +182,10 @@ export default function AdminJadwal() {
   );
 
   const roomOptions = useMemo(
-    () => rooms.map((r) => ({ value: r.name, label: r.name })),
+    () => [
+      { value: 'Online', label: '🌐 Online' },
+      ...rooms.map((r) => ({ value: r.name, label: r.name })),
+    ],
     [rooms],
   );
 

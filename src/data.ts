@@ -265,6 +265,7 @@ export interface EventRow {
   location: string | null;
   category: string | null;
   class_name: string | null;
+  collection_time: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -309,7 +310,7 @@ export async function getEventsFromD1(
     const { results } = await db
       .prepare(
         `SELECT id, ext_id, title, description, date, end_date, location, category,
-                class_name, created_at, updated_at
+                class_name, collection_time, created_at, updated_at
          FROM events
          WHERE class_name = ? OR class_name IS NULL
          ORDER BY date`,
@@ -321,7 +322,7 @@ export async function getEventsFromD1(
   const { results } = await db
     .prepare(
       `SELECT id, ext_id, title, description, date, end_date, location, category,
-              class_name, created_at, updated_at
+              class_name, collection_time, created_at, updated_at
        FROM events
        ORDER BY date`,
     )
@@ -336,7 +337,7 @@ export async function getEventById(
   return db
     .prepare(
       `SELECT id, ext_id, title, description, date, end_date, location, category,
-              class_name, created_at, updated_at
+              class_name, collection_time, created_at, updated_at
        FROM events WHERE id = ?`,
     )
     .bind(id)
@@ -349,8 +350,8 @@ export async function insertEvent(
 ): Promise<number> {
   const result = await db
     .prepare(
-      `INSERT INTO events (ext_id, title, description, date, end_date, location, category, class_name)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO events (ext_id, title, description, date, end_date, location, category, class_name, collection_time)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .bind(
       row.ext_id,
@@ -361,6 +362,7 @@ export async function insertEvent(
       row.location,
       row.category,
       row.class_name,
+      row.collection_time,
     )
     .run();
   return result.meta.last_row_id;
@@ -377,7 +379,7 @@ export async function updateEvent(
     .prepare(
       `UPDATE events
        SET ext_id = ?, title = ?, description = ?, date = ?, end_date = ?,
-           location = ?, category = ?, class_name = ?,
+           location = ?, category = ?, class_name = ?, collection_time = ?,
            updated_at = datetime('now')
        WHERE id = ?`,
     )
@@ -390,6 +392,7 @@ export async function updateEvent(
       row.location ?? existing.location,
       row.category ?? existing.category,
       row.class_name ?? existing.class_name,
+      row.collection_time ?? existing.collection_time,
       id,
     )
     .run();
