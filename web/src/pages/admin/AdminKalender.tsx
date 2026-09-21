@@ -1,12 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import Markdown from 'react-markdown';
-import { apiClient, notifyCalendar } from '../../api';
+import { apiClient } from '../../api';
 import type { CalendarEvent } from '../../types';
 import { CLASS_LIST } from '../../types';
 import Modal from '../../components/Modal';
 import Combobox from '../../components/Combobox';
 import { showToast } from '../../components/Toast';
 import { required, validate, FieldError, hasError } from '../../lib/validation';
+import NotifyPrompt from '../../components/NotifyPrompt';
 
 const EMPTY = { title: '', description: '', date: '', end_date: '', location: '', category: '', class_name: '' };
 
@@ -37,6 +38,7 @@ export default function AdminKalender() {
   const [error, setError] = useState('');
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string | null>>({});
+  const [notifyPromptClass, setNotifyPromptClass] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     try {
@@ -93,10 +95,10 @@ export default function AdminKalender() {
       } else {
         await apiClient.post('/admin/events', form);
       }
-      if (form.class_name) notifyCalendar([form.class_name]);
       setModalOpen(false);
       showToast(editing ? 'Event berhasil diperbarui' : 'Event berhasil ditambahkan', 'success');
       load();
+      setNotifyPromptClass(form.class_name);
     } catch (e: any) {
       setError(e.body?.error || 'Gagal menyimpan');
     } finally {
@@ -238,6 +240,13 @@ export default function AdminKalender() {
           <button onClick={handleDelete} className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700">Hapus</button>
         </div>
       </Modal>
+
+      <NotifyPrompt
+        open={notifyPromptClass !== null}
+        onClose={() => setNotifyPromptClass(null)}
+        defaultClass={notifyPromptClass ?? ''}
+        type="kalender"
+      />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { apiClient, notifySchedule } from '../../api';
+import { apiClient } from '../../api';
 import { useAuth } from '../../contexts/AuthContext';
 import type { SchedulesResponse, ClassSchedule, Room } from '../../types';
 import { DAYS, CLASS_LIST } from '../../types';
@@ -7,6 +7,7 @@ import Modal from '../../components/Modal';
 import Combobox from '../../components/Combobox';
 import { showToast } from '../../components/Toast';
 import { required, FieldError } from '../../lib/validation';
+import NotifyPrompt from '../../components/NotifyPrompt';
 
 interface FormData {
   class_name: string;
@@ -51,6 +52,7 @@ export default function AdminJadwal() {
   const [deleteTarget, setDeleteTarget] = useState<number | null>(null);
   const [rooms, setRooms] = useState<Room[]>([]);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [notifyPromptClass, setNotifyPromptClass] = useState<string | null>(null);
 
   const myClass = !isGlobal ? scope?.replace('class:', '') : null;
 
@@ -288,10 +290,10 @@ export default function AdminJadwal() {
       } else {
         await apiClient.put(`/admin/schedules/${editingId}`, form);
       }
-      notifySchedule([form.class_name]).catch(() => {});
       showToast(editingId === null ? 'Jadwal ditambahkan' : 'Jadwal diperbarui', 'success');
       setModalOpen(false);
       load();
+      setNotifyPromptClass(form.class_name);
     } catch (e: unknown) {
       const msg = (e instanceof Error && 'body' in e)
         ? (e as { body?: { error?: string } }).body?.error || 'Gagal menyimpan'
@@ -310,6 +312,7 @@ export default function AdminJadwal() {
       showToast('Jadwal dihapus', 'success');
       setDeleteTarget(null);
       load();
+      setNotifyPromptClass(selected?.class_name ?? '');
     } catch (e: unknown) {
       const msg = (e instanceof Error && 'body' in e)
         ? (e as { body?: { error?: string } }).body?.error || 'Gagal menghapus'
@@ -575,6 +578,12 @@ export default function AdminJadwal() {
           </button>
         </div>
       </Modal>
+      <NotifyPrompt
+        open={notifyPromptClass !== null}
+        onClose={() => setNotifyPromptClass(null)}
+        defaultClass={notifyPromptClass ?? ''}
+        type="jadwal"
+      />
     </div>
   );
 }

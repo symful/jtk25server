@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { apiClient, notifyPengganti } from '../../api';
+import { apiClient } from '../../api';
 import { useAuth } from '../../contexts/AuthContext';
 import type { Pengganti, SchedulesResponse, Room } from '../../types';
 import { CLASS_LIST } from '../../types';
@@ -7,6 +7,7 @@ import Modal from '../../components/Modal';
 import Combobox from '../../components/Combobox';
 import { showToast } from '../../components/Toast';
 import { required, FieldError } from '../../lib/validation';
+import NotifyPrompt from '../../components/NotifyPrompt';
 
 /* ── Session row types ────────────────────────────────────────────────────── */
 
@@ -239,6 +240,7 @@ export default function AdminPengganti() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [deleteId, setDeleteId] = useState<number | null>(null);
+  const [notifyPromptClass, setNotifyPromptClass] = useState<string | null>(null);
 
   const [rowErrors, setRowErrors] = useState<Record<number, Record<string, string>>>({});
   const [sessionError, setSessionError] = useState('');
@@ -530,10 +532,10 @@ export default function AdminPengganti() {
       } else {
         await apiClient.post('/admin/pengganti', payload);
       }
-      notifyPengganti([form.class_code]);
       showToast('Pengganti berhasil disimpan', 'success');
       closeModal();
       loadPengganti();
+      setNotifyPromptClass(form.class_code);
     } catch (e: unknown) {
       const err = e as { body?: { error?: string } };
       setError(err.body?.error || 'Gagal menyimpan');
@@ -766,6 +768,13 @@ export default function AdminPengganti() {
           <button onClick={handleDelete} className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700">Hapus</button>
         </div>
       </Modal>
+
+      <NotifyPrompt
+        open={notifyPromptClass !== null}
+        onClose={() => setNotifyPromptClass(null)}
+        defaultClass={notifyPromptClass ?? ''}
+        type="pengganti"
+      />
     </div>
   );
 }
