@@ -6,3 +6,5 @@ dist/
 client_build/
 .dev.vars
 .env
+web/public/firebase-config.js
+web/tsconfig.tsbuildinfo
