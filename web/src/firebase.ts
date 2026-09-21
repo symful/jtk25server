@@ -2,11 +2,15 @@ import { initializeApp, type FirebaseApp } from 'firebase/app';
 import {
   getMessaging,
   getToken,
+  onMessage,
   type Messaging,
 } from 'firebase/messaging';
 
 let app: FirebaseApp | null = null;
 let messaging: Messaging | null = null;
+
+/** Shared localStorage key — same as Jadwal.tsx */
+const STORAGE_KEY = 'jtk25_selected_class';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -103,7 +107,54 @@ export async function unsubscribeFromAllTopics(): Promise<void> {
   const token = await getToken(m, {
     vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
   });
+
+  const savedClass = localStorage.getItem(STORAGE_KEY);
+  if (savedClass) {
+    await apiUnsubscribe(token, `jtk25_${savedClass}`);
+  }
   await apiUnsubscribe(token, 'jtk25_global');
+}
+
+export async function subscribeWithClassSwap(newClass: string): Promise<void> {
+  const m = await getFirebaseMessaging();
+  if (!m) return;
+
+  const token = await getToken(m, {
+    vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
+  });
+
+  const oldClass = localStorage.getItem(STORAGE_KEY);
+  if (oldClass && oldClass !== newClass) {
+    await apiUnsubscribe(token, `jtk25_${oldClass}`);
+  }
+
+  await apiSubscribe(token, `jtk25_${newClass}`);
+  await apiSubscribe(token, 'jtk25_global');
+  localStorage.setItem(STORAGE_KEY, newClass);
+}
+
+export async function subscribeGlobalOnly(): Promise<void> {
+  const m = await getFirebaseMessaging();
+  if (!m) return;
+
+  const token = await getToken(m, {
+    vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
+  });
+
+  const oldClass = localStorage.getItem(STORAGE_KEY);
+  if (oldClass) {
+    await apiUnsubscribe(token, `jtk25_${oldClass}`);
+  }
+  await apiSubscribe(token, 'jtk25_global');
+  localStorage.removeItem(STORAGE_KEY);
+}
+
+export function onForegroundMessage(
+  callback: (payload: { notification?: { title?: string; body?: string } }) => void,
+): (() => void) | null {
+  const m = messaging;
+  if (!m) return null;
+  return onMessage(m, callback);
 }
 
 export function isPushSupported(): boolean {

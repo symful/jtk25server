@@ -1,8 +1,17 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
-import { useState, useEffect } from 'react';
-import { isPushSupported, requestNotificationPermission, subscribeToClassTopic } from '../firebase';
+import { useState, useEffect, useRef } from 'react';
+import {
+  isPushSupported,
+  requestNotificationPermission,
+  subscribeWithClassSwap,
+  subscribeGlobalOnly,
+  unsubscribeFromAllTopics,
+  onForegroundMessage,
+} from '../firebase';
+import { CLASS_LIST } from '../types';
+import { showToast } from './Toast';
 
 const NAV_ITEMS = [
   { path: '/', label: 'Beranda' },
@@ -183,41 +192,147 @@ function ThemeToggle({ onClick, theme }: { onClick: () => void; theme: 'light' |
 function NotificationBell() {
   const [enabled, setEnabled] = useState(false);
   const [supported, setSupported] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [selectedClass, setSelectedClass] = useState<string>(
+    () => localStorage.getItem('jtk25_selected_class') ?? '',
+  );
+  const [permissionDenied, setPermissionDenied] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setSupported(isPushSupported());
     if ('Notification' in window) {
-      setEnabled(Notification.permission === 'granted');
+      const perm = Notification.permission;
+      setEnabled(perm === 'granted');
+      setPermissionDenied(perm === 'denied');
     }
   }, []);
 
+  useEffect(() => {
+    if (!enabled) return;
+    const unsub = onForegroundMessage((payload) => {
+      const title = payload.notification?.title ?? 'JTK25';
+      const body = payload.notification?.body ?? '';
+      showToast(body ? `${title}: ${body}` : title, 'info');
+    });
+    return () => { unsub?.(); };
+  }, [enabled]);
+
+  useEffect(() => {
+    if (!dropdownOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [dropdownOpen]);
+
   const toggle = async () => {
+    if (permissionDenied) return;
     if (enabled) {
+      await unsubscribeFromAllTopics();
+      setSelectedClass('');
       setEnabled(false);
+      setDropdownOpen(false);
       return;
     }
     const granted = await requestNotificationPermission();
     if (granted) {
-      await subscribeToClassTopic('jtk25_global');
+      if (selectedClass) {
+        await subscribeWithClassSwap(selectedClass);
+      } else {
+        await subscribeGlobalOnly();
+      }
       setEnabled(true);
+    }
+  };
+
+  const selectClass = async (classCode: string) => {
+    if (!enabled || permissionDenied) return;
+    setDropdownOpen(false);
+    if (classCode) {
+      await subscribeWithClassSwap(classCode);
+      setSelectedClass(classCode);
+    } else {
+      await subscribeGlobalOnly();
+      setSelectedClass('');
     }
   };
 
   if (!supported) return null;
 
   return (
-    <button
-      onClick={toggle}
-      title={enabled ? 'Notifikasi aktif' : 'Aktifkan notifikasi'}
-      className={`p-2 rounded-lg transition-colors ${
-        enabled
-          ? 'text-indigo-600 bg-indigo-50 dark:text-indigo-400 dark:bg-indigo-900/30'
-          : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:text-gray-300 dark:hover:bg-gray-800'
-      }`}
-    >
-      <svg className="w-5 h-5" fill={enabled ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-      </svg>
-    </button>
+    <div className="relative" ref={dropdownRef}>
+      <div className="flex items-center gap-1">
+        <button
+          onClick={toggle}
+          title={
+            permissionDenied
+              ? 'Notifikasi diblokir oleh browser'
+              : enabled
+                ? 'Notifikasi aktif'
+                : 'Aktifkan notifikasi'
+          }
+          className={`p-2 rounded-lg transition-colors ${
+            enabled
+              ? 'text-indigo-600 bg-indigo-50 dark:text-indigo-400 dark:bg-indigo-900/30'
+              : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:text-gray-300 dark:hover:bg-gray-800'
+          }`}
+        >
+          <svg className="w-5 h-5" fill={enabled ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+        </button>
+        {enabled && (
+          <button
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+            title="Pilih kelas notifikasi"
+            className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:text-gray-300 dark:hover:bg-gray-800 transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+        )}
+      </div>
+
+      {permissionDenied && (
+        <div className="absolute right-0 top-full mt-2 w-64 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-3 z-50">
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Notifikasi diblokir oleh browser. Silakan izinkan notifikasi di pengaturan browser.
+          </p>
+        </div>
+      )}
+
+      {dropdownOpen && enabled && (
+        <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-1 z-50">
+          <button
+            onClick={() => { selectClass(''); }}
+            className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
+              selectedClass === ''
+                ? 'text-indigo-600 dark:text-indigo-400 font-medium'
+                : 'text-gray-700 dark:text-gray-300'
+            }`}
+          >
+            Global saja
+          </button>
+          {CLASS_LIST.map((cls) => (
+            <button
+              key={cls}
+              onClick={() => { selectClass(cls); }}
+              className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
+                selectedClass === cls
+                  ? 'text-indigo-600 dark:text-indigo-400 font-medium'
+                  : 'text-gray-700 dark:text-gray-300'
+              }`}
+            >
+              {cls}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

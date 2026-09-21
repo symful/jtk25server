@@ -1,13 +1,9 @@
 // Firebase Messaging Service Worker for JTK25 Web SPA
 importScripts('https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js');
+importScripts('firebase-config.js');
 
-firebase.initializeApp({
-  apiKey: 'AIzaSyBgaTtr17l2rtcG3E0gGj9SzWRSEAAAm08',
-  projectId: 'numeric-lead-265602',
-  messagingSenderId: '273058937677',
-  appId: '1:273058937677:web:c2d04a841cf1ba34ae5504',
-});
+firebase.initializeApp(self.FIREBASE_CONFIG);
 
 const messaging = firebase.messaging();
 
