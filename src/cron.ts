@@ -1,9 +1,28 @@
+/**
+ * ── Dedup Key Formats ──────────────────────────────────────────────────────
+ * All keys use the pattern {type}:{identifier}:{dateISO}:{slotStart}
+ * or {type}:{identifier}:{variant} for events.
+ *
+ *   upcoming class:     kelas:{classCode}:{dateISO}:{slotStart}
+ *   upcoming pengganti: pengganti:{classCode}:{dateISO}:{slotStart}
+ *   upcoming event:     acara:{eventId}:{variant}  (variant = '30m')
+ *   morning digest:     pagi:{classCode}:{dateISO}  (one per class per day)
+ *   morning pengganti:  pagi-pengganti:{classCode}:{dateISO}
+ *   morning events:     acara-pagi:{eventId or 'global'}:{dateISO}
+ *
+ * Mark-before-send: wasSent() → markSent() → sendToTopic()
+ * A lost send on failure is an accepted tradeoff (prevents cron-retry double-fires).
+ * ───────────────────────────────────────────────────────────────────────────
+ */
 import {
   getSchedulesFromD1,
   getEventsFromD1,
   getPenggantiFromD1,
 } from "./data";
 import { sendToTopic } from "./fcm";
+import { wasSent, markSent } from "./dedup";
+
+// ─── Helpers ────────────────────────────────────────────────────────────────
 
 function getWibNow() {
   const now = new Date();
@@ -32,8 +51,16 @@ function getWibNow() {
   return { now: wib, dateStr, timeStr, hourNum, dayName, tomorrowStr };
 }
 
+/**
+ * Sanitize a class code for use as an FCM topic name.
+ * FCM topics allow `[a-zA-Z0-9\-_.~%]+`; replace invalid chars with `-`.
+ */
+function sanitizeTopic(classCode: string): string {
+  return classCode.replace(/[^a-zA-Z0-9\-_.~%]/g, "-");
+}
+
 function classTopic(className: string): string {
-  return `jtk25_${className.replace(/_/g, "-")}`;
+  return `jtk25_${sanitizeTopic(className)}`;
 }
 
 function timeToMinutes(time: string): number {
@@ -46,10 +73,24 @@ function isWithinMinutes(scheduleTime: string, nowMinutes: number, beforeMin: nu
   return schedMin > nowMinutes && schedMin <= nowMinutes + beforeMin;
 }
 
+function formatSessionLines(
+  sessions: Array<{ course_name: string; time: string; room: string }>,
+  maxLines: number,
+): string {
+  const lines = sessions.slice(0, maxLines).map(
+    (s) => `${s.course_name} — ${s.time} di ${s.room}`,
+  );
+  const remaining = sessions.length - maxLines;
+  if (remaining > 0) lines.push(`+${remaining} lagi`);
+  return lines.join("\n");
+}
+
 const DAY_MAP: Record<string, string> = {
   Senin: "SENIN", Selasa: "SELASA", Rabu: "RABU",
   Kamis: "KAMIS", Jumat: "JUMAT",
 };
+
+// ─── Main entry ─────────────────────────────────────────────────────────────
 
 export async function runScheduledNotifications(env: Env): Promise<void> {
   const db = env.jtk25_schedules;
@@ -61,13 +102,13 @@ export async function runScheduledNotifications(env: Env): Promise<void> {
 
   if (isMorningSummary) {
     await Promise.all([
-      notifyMorningSchedules(db, env, dayName),
+      notifyMorningSchedules(db, env, dateStr, dayName),
       notifyMorningPengganti(db, env, tomorrowStr),
       notifyMorningEvents(db, env, dateStr, tomorrowStr),
     ]);
   } else {
     await Promise.all([
-      notifyUpcomingSchedules(db, env, nowMinutes, dayName),
+      notifyUpcomingSchedules(db, env, dateStr, nowMinutes, dayName),
       notifyUpcomingPengganti(db, env, dateStr, nowMinutes),
       notifyUpcomingEvents(db, env, dateStr, nowMinutes),
     ]);
@@ -76,7 +117,9 @@ export async function runScheduledNotifications(env: Env): Promise<void> {
 
 // ─── 06:00 WIB — Morning summary ────────────────────────────────────────────
 
-async function notifyMorningSchedules(db: D1Database, env: Env, dayName: string): Promise<void> {
+async function notifyMorningSchedules(
+  db: D1Database, env: Env, dateStr: string, dayName: string,
+): Promise<void> {
   const { classes } = await getSchedulesFromD1(db);
   const todayEnum = DAY_MAP[dayName];
   if (!todayEnum) return;
@@ -85,9 +128,12 @@ async function notifyMorningSchedules(db: D1Database, env: Env, dayName: string)
     const daySchedule = cls.schedule.find((d) => d.day === todayEnum);
     if (!daySchedule || daySchedule.sessions.length === 0) continue;
 
-    const sessionList = daySchedule.sessions.map((s) => `${s.time} ${s.course_code}`).join(", ");
+    const key = `pagi:${cls.class_name}:${dateStr}`;
+    if (await wasSent(env, key)) continue;
+    await markSent(env, key);
+
     const title = "Jadwal Hari Ini";
-    const body = `${daySchedule.sessions.length} sesi: ${sessionList}`;
+    const body = formatSessionLines(daySchedule.sessions, 3);
 
     await sendToTopic(env, classTopic(cls.class_name), title, body, {
       type: "schedule_morning", classCode: cls.class_name, day: dayName,
@@ -97,7 +143,9 @@ async function notifyMorningSchedules(db: D1Database, env: Env, dayName: string)
   console.log("[cron] Morning schedule summary sent");
 }
 
-async function notifyMorningPengganti(db: D1Database, env: Env, tomorrowStr: string): Promise<void> {
+async function notifyMorningPengganti(
+  db: D1Database, env: Env, tomorrowStr: string,
+): Promise<void> {
   const rows = await getPenggantiFromD1(db);
   const entries = rows.filter((r) => r.date === tomorrowStr);
   if (entries.length === 0) return;
@@ -110,17 +158,26 @@ async function notifyMorningPengganti(db: D1Database, env: Env, tomorrowStr: str
   }
 
   for (const [classCode, classEntries] of byClass) {
-    const kinds = classEntries.map((e) => e.kind);
-    const hasReplace = kinds.includes("replace");
-    const hasAdd = kinds.includes("add");
+    const key = `pagi-pengganti:${classCode}:${tomorrowStr}`;
+    if (await wasSent(env, key)) continue;
+    await markSent(env, key);
 
-    let title = "Pengganti Besok";
-    if (hasReplace && hasAdd) title = "Jadwal Besok Berubah + Tambahan";
-    else if (hasReplace) title = "Jadwal Besok Berubah";
-    else if (hasAdd) title = "Tambahan Jadwal Besok";
+    const allSessions: Array<{ course_name: string; time: string; room: string }> = [];
+    for (const entry of classEntries) {
+      if (entry.sessions) {
+        try {
+          const parsed = JSON.parse(entry.sessions) as Array<{
+            course_name: string; time: string; room: string;
+          }>;
+          allSessions.push(...parsed);
+        } catch { continue; }
+      }
+    }
 
-    const notes = classEntries.filter((e) => e.note).map((e) => e.note).join("; ");
-    const body = notes || `${classEntries.length} pengganti untuk besok`;
+    const title = "Pengganti Besok";
+    const body = allSessions.length > 0
+      ? formatSessionLines(allSessions, 3)
+      : `${classEntries.length} pengganti untuk besok`;
 
     await sendToTopic(env, classTopic(classCode), title, body, {
       type: "pengganti_morning", classCode, date: tomorrowStr,
@@ -130,7 +187,9 @@ async function notifyMorningPengganti(db: D1Database, env: Env, tomorrowStr: str
   console.log("[cron] Morning pengganti summary sent");
 }
 
-async function notifyMorningEvents(db: D1Database, env: Env, todayStr: string, tomorrowStr: string): Promise<void> {
+async function notifyMorningEvents(
+  db: D1Database, env: Env, todayStr: string, tomorrowStr: string,
+): Promise<void> {
   const rows = await getEventsFromD1(db);
   const upcoming = rows.filter((r) => {
     const d = r.date.substring(0, 10);
@@ -141,26 +200,29 @@ async function notifyMorningEvents(db: D1Database, env: Env, todayStr: string, t
   for (const event of upcoming) {
     const eventDate = event.date.substring(0, 10);
     const label = eventDate === todayStr ? "Hari Ini" : "Besok";
-    const location = event.location ? ` di ${event.location}` : "";
+
+    const topic = event.class_name ? classTopic(event.class_name) : "jtk25_global";
+    const eventKey = event.class_name ? String(event.id) : "global";
+    const key = `acara-pagi:${eventKey}:${eventDate}`;
+    if (await wasSent(env, key)) continue;
+    await markSent(env, key);
+
+    const location = event.location ? ` — ${event.location}` : "";
     const title = `Acara ${label}`;
     const body = `${event.title}${location}`;
 
-    if (event.class_name) {
-      await sendToTopic(env, classTopic(event.class_name), title, body, {
-        type: "event_morning", eventId: String(event.id), date: eventDate,
-      });
-    } else {
-      await sendToTopic(env, "jtk25_global", title, body, {
-        type: "event_morning", eventId: String(event.id), date: eventDate,
-      });
-    }
+    await sendToTopic(env, topic, title, body, {
+      type: "event_morning", eventId: String(event.id), date: eventDate,
+    });
   }
   console.log("[cron] Morning event summary sent");
 }
 
 // ─── Interval check — within 30 minutes ─────────────────────────────────────
 
-async function notifyUpcomingSchedules(db: D1Database, env: Env, nowMinutes: number, dayName: string): Promise<void> {
+async function notifyUpcomingSchedules(
+  db: D1Database, env: Env, dateStr: string, nowMinutes: number, dayName: string,
+): Promise<void> {
   const { classes } = await getSchedulesFromD1(db);
   const todayEnum = DAY_MAP[dayName];
   if (!todayEnum) return;
@@ -171,8 +233,12 @@ async function notifyUpcomingSchedules(db: D1Database, env: Env, nowMinutes: num
 
     for (const session of daySchedule.sessions) {
       if (isWithinMinutes(session.time, nowMinutes, 30)) {
+        const key = `kelas:${cls.class_name}:${dateStr}:${session.time}`;
+        if (await wasSent(env, key)) continue;
+        await markSent(env, key);
+
         const title = "Kelas Sebentar Lagi";
-        const body = `${session.course_name} (${session.course_code}) ${session.time} — ${session.room}`;
+        const body = `${session.course_name} (${session.type}) — ${session.time} di ${session.room}`;
         await sendToTopic(env, classTopic(cls.class_name), title, body, {
           type: "class_incoming", classCode: cls.class_name,
           course: session.course_code, time: session.time, room: session.room,
@@ -183,18 +249,29 @@ async function notifyUpcomingSchedules(db: D1Database, env: Env, nowMinutes: num
   console.log("[cron] Upcoming schedules check done");
 }
 
-async function notifyUpcomingPengganti(db: D1Database, env: Env, todayStr: string, nowMinutes: number): Promise<void> {
+async function notifyUpcomingPengganti(
+  db: D1Database, env: Env, todayStr: string, nowMinutes: number,
+): Promise<void> {
   const rows = await getPenggantiFromD1(db);
   const todayEntries = rows.filter((r) => r.date === todayStr);
   if (todayEntries.length === 0) return;
 
   for (const entry of todayEntries) {
     if (!entry.sessions) continue;
-    const sessions = JSON.parse(entry.sessions);
+    let sessions: Array<{ course_name: string; time: string; room: string; type: string }>;
+    try {
+      sessions = JSON.parse(entry.sessions);
+    } catch { continue; }
+
     for (const session of sessions) {
       if (isWithinMinutes(session.time, nowMinutes, 30)) {
-        const title = "Pengganti Sekarang";
-        const body = `${session.course_name} (${session.course_code}) ${session.time} — ${session.room}`;
+        const key = `pengganti:${entry.class_code}:${todayStr}:${session.time}`;
+        if (await wasSent(env, key)) continue;
+        await markSent(env, key);
+
+        const title = "Kelas Pengganti";
+        const notePart = entry.note ? ` (${entry.note})` : "";
+        const body = `${session.course_name} — ${session.time} di ${session.room}${notePart}`;
         await sendToTopic(env, classTopic(entry.class_code), title, body, {
           type: "pengganti_incoming", classCode: entry.class_code,
           time: session.time, room: session.room,
@@ -205,7 +282,9 @@ async function notifyUpcomingPengganti(db: D1Database, env: Env, todayStr: strin
   console.log("[cron] Upcoming pengganti check done");
 }
 
-async function notifyUpcomingEvents(db: D1Database, env: Env, todayStr: string, nowMinutes: number): Promise<void> {
+async function notifyUpcomingEvents(
+  db: D1Database, env: Env, todayStr: string, nowMinutes: number,
+): Promise<void> {
   const rows = await getEventsFromD1(db);
 
   for (const event of rows) {
@@ -214,19 +293,19 @@ async function notifyUpcomingEvents(db: D1Database, env: Env, todayStr: string, 
 
     const eventTime = event.date.substring(11, 16).replace(":", ".");
     if (isWithinMinutes(eventTime, nowMinutes, 30)) {
-      const location = event.location ? ` di ${event.location}` : "";
-      const title = "Acara Sebentar Lagi";
-      const body = `${event.title}${location}`;
+      const topic = event.class_name ? classTopic(event.class_name) : "jtk25_global";
+      const eventKey = event.class_name ? String(event.id) : "global";
+      const key = `acara:${eventKey}:30m`;
+      if (await wasSent(env, key)) continue;
+      await markSent(env, key);
 
-      if (event.class_name) {
-        await sendToTopic(env, classTopic(event.class_name), title, body, {
-          type: "event_incoming", eventId: String(event.id), date: eventDate,
-        });
-      } else {
-        await sendToTopic(env, "jtk25_global", title, body, {
-          type: "event_incoming", eventId: String(event.id), date: eventDate,
-        });
-      }
+      const location = event.location ? `${event.location}, ` : "";
+      const title = "Acara Sebentar Lagi";
+      const body = `${event.title} — ${location}${eventTime}`;
+
+      await sendToTopic(env, topic, title, body, {
+        type: "event_incoming", eventId: String(event.id), date: eventDate,
+      });
     }
   }
   console.log("[cron] Upcoming events check done");
