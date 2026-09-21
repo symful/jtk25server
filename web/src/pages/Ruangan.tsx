@@ -5,11 +5,37 @@ import { DAYS } from '../types';
 
 type ViewMode = 'jadwal' | 'matriks';
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
+const CANONICAL_SLOTS = [
+  '07.00-07.50',
+  '07.50-08.40',
+  '08.40-09.30',
+  '09.50-10.40',
+  '10.40-11.30',
+  '11.30-12.20',
+  '13.00-13.50',
+  '13.50-14.40',
+  '14.40-15.20',
+  '15.40-16.30',
+];
 
-/** Map day names (SENIN..JUMAT) -> YYYY-MM-DD for the current week. */
+function parseTimeMinutes(iso: string): { start: number; end: number } | null {
+  const parts = iso.split('-');
+  if (parts.length !== 2) return null;
+  const [sh, sm] = parts[0].split('.').map(Number);
+  const [eh, em] = parts[1].split('.').map(Number);
+  if (isNaN(sh) || isNaN(sm) || isNaN(eh) || isNaN(em)) return null;
+  return { start: sh * 60 + sm, end: eh * 60 + em };
+}
+
+function getWibNow(): { day: string | null; hour: number; minutes: number } {
+  const now = new Date();
+  const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
+  const wib = new Date(utcMs + 7 * 3600000);
+  const dayIndex = wib.getDay();
+  const dayName = dayIndex >= 1 && dayIndex <= 5 ? DAYS[dayIndex - 1] : null;
+  return { day: dayName, hour: wib.getHours(), minutes: wib.getHours() * 60 + wib.getMinutes() };
+}
+
 function getCurrentWeekDates(): Record<string, string> {
   const now = new Date();
   const dow = now.getDay();
@@ -27,14 +53,6 @@ function getCurrentWeekDates(): Record<string, string> {
   return result;
 }
 
-/**
- * Build the effective room -> day -> sessions map from schedules + pengganti.
- *
- * For each day in the current week the pengganti entries are applied:
- * - replace: removes base sessions at matching times, inserts pengganti sessions
- * - add: appends pengganti sessions
- * - info: ignored
- */
 function buildEffectiveSessions(
   schedules: SchedulesResponse | null,
   pengganti: Pengganti[],
@@ -123,7 +141,6 @@ function buildEffectiveSessions(
   return map;
 }
 
-/** Set of "room:day:hour" keys affected by pengganti (for visual indicator). */
 function buildPenggantiCells(pengganti: Pengganti[]): Set<string> {
   const cells = new Set<string>();
   const weekDates = getCurrentWeekDates();
@@ -133,10 +150,15 @@ function buildPenggantiCells(pengganti: Pengganti[]): Set<string> {
     for (const entry of pengganti.filter((e) => e.date === dateStr)) {
       if (entry.kind === 'info') continue;
       for (const ps of entry.sessions) {
-        const parts = ps.time.split('-');
-        if (parts.length === 2) {
-          const [sh] = parts[0].split('.').map(Number);
-          cells.add(`${ps.room}:${day}:${sh}`);
+        const parsed = parseTimeMinutes(ps.time);
+        if (parsed) {
+          const slotIdx = CANONICAL_SLOTS.findIndex((cs) => {
+            const gs = parseTimeMinutes(cs);
+            return gs && parsed.start < gs.end && parsed.end > gs.start;
+          });
+          if (slotIdx >= 0) {
+            cells.add(`${ps.room}:${day}:${slotIdx}`);
+          }
         }
       }
     }
@@ -279,27 +301,23 @@ function MatrixView({ rooms, effectiveSessions, penggantiCells, filterMode, setF
   setFilterMode: (m: 'all' | 'available') => void;
 }) {
   const dayLabels = ['SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT'];
-  const timeSlots = ['07.00', '08.00', '09.00', '10.00', '11.00', '12.00', '13.00', '14.00', '15.00', '16.00'];
 
-  const isOccupied = (roomName: string, day: string, hour: number): ScheduleSession | null => {
+  const isOccupied = (roomName: string, day: string, slotIndex: number): ScheduleSession | null => {
     const sessions = effectiveSessions.get(roomName)?.get(day) || [];
+    const gridSlot = parseTimeMinutes(CANONICAL_SLOTS[slotIndex]);
+    if (!gridSlot) return null;
+
     for (const s of sessions) {
-      const parts = s.time.split('-');
-      if (parts.length === 2) {
-        const [sh, sm] = parts[0].split('.').map(Number);
-        const [eh, em] = parts[1].split('.').map(Number);
-        const startMin = sh * 60 + sm;
-        const endMin = eh * 60 + em;
-        const slotMin = hour * 60;
-        if (slotMin >= startMin && slotMin < endMin) return s;
+      const parsed = parseTimeMinutes(s.time);
+      if (parsed && parsed.start < gridSlot.end && parsed.end > gridSlot.start) {
+        return s;
       }
     }
     return null;
   };
 
-  const now = new Date();
-  const currentDay = DAYS[now.getDay() - 1];
-  const currentHour = now.getHours();
+  const wib = getWibNow();
+  const currentHour = wib.hour;
 
   return (
     <div>
@@ -317,9 +335,8 @@ function MatrixView({ rooms, effectiveSessions, penggantiCells, filterMode, setF
 
       <div className="space-y-4">
         {rooms.map((room) => {
-          const roomAvailable = dayLabels.every((d) => timeSlots.every((t) => {
-            const h = parseInt(t.split('.')[0]);
-            return isOccupied(room.ext_id, d, h) === null;
+          const roomAvailable = dayLabels.every((d) => CANONICAL_SLOTS.every((_t, si) => {
+            return isOccupied(room.ext_id, d, si) === null;
           }));
           if (filterMode === 'available' && !roomAvailable) return null;
 
@@ -331,44 +348,47 @@ function MatrixView({ rooms, effectiveSessions, penggantiCells, filterMode, setF
                 <span className={`text-xs px-2 py-0.5 rounded-full ${room.type === 'lab' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300' : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'}`}>{room.type}</span>
               </div>
               <div className="overflow-x-auto">
-                <table className="w-full text-xs">
+                <table className="w-full text-xs min-w-[420px]">
                   <thead>
                     <tr>
-                      <th className="px-2 py-1 text-left text-gray-500 dark:text-gray-400 font-medium w-16"></th>
+                      <th className="px-2 py-1 text-left text-gray-500 dark:text-gray-400 font-medium w-20"></th>
                       {dayLabels.map((d) => (
                         <th key={d} className="px-2 py-1 text-center text-gray-500 dark:text-gray-400 font-medium">{d.slice(0, 3)}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
-                    {timeSlots.map((t) => (
-                      <tr key={t}>
-                        <td className="px-2 py-1 text-gray-500 dark:text-gray-400 font-medium whitespace-nowrap">{t}</td>
-                        {dayLabels.map((d) => {
-                          const h = parseInt(t.split('.')[0]);
-                          const session = isOccupied(room.ext_id, d, h);
-                          const isNow = d === currentDay && h === currentHour;
-                          const isPengganti = penggantiCells.has(`${room.ext_id}:${d}:${h}`);
-                          return (
-                            <td key={d} className="px-1 py-1">
-                              <div className={`h-8 rounded flex items-center justify-center ${
-                                isPengganti
-                                  ? 'bg-amber-100 border border-amber-300 dark:bg-amber-900/20 dark:border-amber-700'
-                                  : session
-                                    ? 'bg-red-100 border border-red-200 dark:bg-red-900/20 dark:border-red-800'
-                                    : 'bg-green-50 border border-green-100 dark:bg-green-900/10 dark:border-green-800'
-                              } ${isNow ? 'ring-2 ring-indigo-500' : ''}`}>
-                                {session && (
-                                  <span className={`text-[8px] font-medium text-center leading-tight px-0.5 truncate max-w-full ${isPengganti ? 'text-amber-700 dark:text-amber-300' : 'text-red-700 dark:text-red-300'}`}>
-                                    {session.course_code}
-                                  </span>
-                                )}
-                              </div>
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    ))}
+                    {CANONICAL_SLOTS.map((t, si) => {
+                      const slotStart = t.split('-')[0];
+                      return (
+                        <tr key={t}>
+                          <td className="px-2 py-1 text-gray-500 dark:text-gray-400 font-medium whitespace-nowrap text-[10px]">{slotStart}</td>
+                          {dayLabels.map((d) => {
+                            const session = isOccupied(room.ext_id, d, si);
+                            const slotParsed = parseTimeMinutes(t);
+                            const isNow = d === wib.day && slotParsed !== null && wib.minutes >= slotParsed.start && wib.minutes < slotParsed.end;
+                            const isPengganti = penggantiCells.has(`${room.ext_id}:${d}:${si}`);
+                            return (
+                              <td key={d} className="px-1 py-1">
+                                <div className={`h-8 rounded flex items-center justify-center ${
+                                  isPengganti
+                                    ? 'bg-amber-100 border border-amber-300 dark:bg-amber-900/20 dark:border-amber-700'
+                                    : session
+                                      ? 'bg-red-100 border border-red-200 dark:bg-red-900/20 dark:border-red-800'
+                                      : 'bg-green-50 border border-green-100 dark:bg-green-900/10 dark:border-green-800'
+                                } ${isNow ? 'ring-2 ring-indigo-500' : ''}`}>
+                                  {session && (
+                                    <span className={`text-[11px] font-medium text-center leading-tight px-0.5 truncate max-w-full ${isPengganti ? 'text-amber-700 dark:text-amber-300' : 'text-red-700 dark:text-red-300'}`}>
+                                      {session.course_code}
+                                    </span>
+                                  )}
+                                </div>
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
