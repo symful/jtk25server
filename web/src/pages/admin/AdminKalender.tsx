@@ -41,6 +41,7 @@ export default function AdminKalender() {
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string | null>>({});
   const [notifyPromptClass, setNotifyPromptClass] = useState<string | null>(null);
+  const [showArchived, setShowArchived] = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -82,6 +83,7 @@ export default function AdminKalender() {
     const errors: Record<string, string | null> = {
       title: validate(form.title, 'Judul', required),
       date: validate(form.date, 'Tanggal tenggat', required),
+      end_date: validate(form.end_date, 'Tanggal akhir', required),
     };
     setFieldErrors(errors);
     return !Object.values(errors).some(hasError);
@@ -120,15 +122,41 @@ export default function AdminKalender() {
     }
   }
 
+  async function handleArchive(id: number, archived: boolean) {
+    try {
+      await apiClient.post(`/admin/events/${id}/archive`, { archived });
+      showToast(archived ? 'Tugas diarsipkan' : 'Tugas dipulihkan', 'success');
+      load();
+    } catch (e: any) {
+      setError(e.body?.error || 'Gagal mengubah status arsip');
+    }
+  }
+
+  const filteredData = showArchived
+    ? data.filter((e) => e.is_archived === 1)
+    : data.filter((e) => e.is_archived === 0);
+
   if (loading) return <div className="p-8 text-center text-gray-400 dark:text-gray-500">Memuat...</div>;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Kelola Tugas</h1>
-        <button onClick={openAdd} className="px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700">
-          + Tambah Tugas
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowArchived(!showArchived)}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              showArchived
+                ? 'bg-gray-600 text-white hover:bg-gray-700'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+            }`}
+          >
+            {showArchived ? 'Tampilkan Aktif' : 'Tampilkan Arsip'}
+          </button>
+          <button onClick={openAdd} className="px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700">
+            + Tambah Tugas
+          </button>
+        </div>
       </div>
 
       {error && (
@@ -148,7 +176,7 @@ export default function AdminKalender() {
             <thead>
               <tr className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
                 <th className="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Judul</th>
-                <th className="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Tenggat</th>
+                <th className="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Tanggal</th>
                 <th className="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Kelas</th>
                 <th className="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Lokasi</th>
                 <th className="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Kategori</th>
@@ -156,13 +184,13 @@ export default function AdminKalender() {
               </tr>
             </thead>
             <tbody>
-              {data.map((e) => (
+              {filteredData.map((e) => (
                 <tr key={e.id} className="border-b border-gray-200 dark:border-gray-700 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/50">
                   <td className="px-4 py-3">
                     <div className="font-medium text-gray-900 dark:text-gray-100">{e.title}</div>
                   </td>
                   <td className="px-4 py-3 text-gray-600 dark:text-gray-400 whitespace-nowrap">
-                    {formatDateID(e.date)}{e.collection_time ? ` ${e.collection_time}` : ''}
+                    {formatDateID(e.date)}{e.end_date && e.end_date !== e.date ? ` - ${formatDateID(e.end_date)}` : ''}{e.collection_time ? ` ${e.collection_time}` : ''}
                   </td>
                   <td className="px-4 py-3 text-gray-600 dark:text-gray-400">
                     {e.class_name ? <span className="px-2 py-0.5 rounded-full text-xs bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">{e.class_name.replace(/_/g, '-')}</span> : <span className="text-gray-400 dark:text-gray-500">Global</span>}
@@ -173,12 +201,18 @@ export default function AdminKalender() {
                   </td>
                   <td className="px-4 py-3 text-right">
                     <button onClick={() => openEdit(e)} className="text-xs text-primary-600 dark:text-primary-400 hover:underline mr-2">Edit</button>
+                    <button
+                      onClick={() => handleArchive(e.id, e.is_archived === 0)}
+                      className={`text-xs hover:underline mr-2 ${e.is_archived === 0 ? 'text-orange-600 dark:text-orange-400' : 'text-green-600 dark:text-green-400'}`}
+                    >
+                      {e.is_archived === 0 ? 'Arsipkan' : 'Pulihkan'}
+                    </button>
                     <button onClick={() => setDeleteId(e.id)} className="text-xs text-red-600 dark:text-red-400 hover:underline">Hapus</button>
                   </td>
                 </tr>
               ))}
-              {data.length === 0 && (
-                <tr><td colSpan={6} className="px-4 py-8 text-center text-gray-400 dark:text-gray-500">Tidak ada data</td></tr>
+              {filteredData.length === 0 && (
+                <tr><td colSpan={6} className="px-4 py-8 text-center text-gray-400 dark:text-gray-500">{showArchived ? 'Tidak ada data arsip' : 'Tidak ada data'}</td></tr>
               )}
             </tbody>
           </table>
@@ -202,11 +236,16 @@ export default function AdminKalender() {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tanggal Tenggat *</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tanggal Mulai *</label>
               <input type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg" />
               <FieldError error={fieldErrors.date} />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tanggal Akhir *</label>
+              <input type="date" value={form.end_date} onChange={(e) => setForm({ ...form, end_date: e.target.value })} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg" />
+              <FieldError error={fieldErrors.end_date} />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Jam Pengumpulan</label>

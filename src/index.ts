@@ -45,7 +45,7 @@ app.get("/api/v1/meta", async (c) => {
   }
 
   const [events, announcements, pengganti, rooms] = await Promise.all([
-    getEventsFromD1(db),
+    getEventsFromD1(db, undefined, false),
     getAnnouncementsFromD1(db),
     getPenggantiFromD1(db),
     getRoomsFromD1(db),
@@ -92,7 +92,7 @@ app.get("/api/v1/announcements", async (c) => {
 });
 
 app.get("/api/v1/calendar", async (c) => {
-  const rows = await getEventsFromD1(c.env.jtk25_schedules);
+  const rows = await getEventsFromD1(c.env.jtk25_schedules, undefined, false);
   return c.json(rows);
 });
 

@@ -5,6 +5,7 @@ import {
   insertEvent,
   updateEvent,
   deleteEvent,
+  archiveEvent,
   getAnnouncementsFromD1,
   getAnnouncementById,
   insertAnnouncement,
@@ -81,7 +82,7 @@ adminContent.get("/events", async (c) => {
   const className = auth.scope === "global"
     ? undefined
     : auth.scope.replace("class:", "");
-  const rows = await getEventsFromD1(c.env.jtk25_schedules, className);
+  const rows = await getEventsFromD1(c.env.jtk25_schedules, className, true);
   return c.json(rows);
 });
 
@@ -200,6 +201,28 @@ adminContent.delete("/events/:id", async (c) => {
 
   const success = await deleteEvent(c.env.jtk25_schedules, id);
   if (!success) return jsonError(c, 500, "Failed to delete event");
+
+  return c.json({ ok: true });
+});
+
+adminContent.post("/events/:id/archive", async (c) => {
+  const auth = await authenticate(c);
+  if (!auth.authenticated) return jsonError(c, 401, "Unauthorized");
+
+  const id = Number(c.req.param("id"));
+  if (isNaN(id)) return jsonError(c, 400, "Invalid event ID");
+
+  const existing = await getEventById(c.env.jtk25_schedules, id);
+  if (!existing) return jsonError(c, 404, "Event not found");
+
+  if (auth.scope !== "global" && existing.class_name) {
+    const allowed = auth.scope.replace("class:", "");
+    if (existing.class_name !== allowed) return jsonError(c, 403, "Access denied");
+  }
+
+  const body = await c.req.json<{ archived: boolean }>();
+  const success = await archiveEvent(c.env.jtk25_schedules, id, body.archived);
+  if (!success) return jsonError(c, 500, "Failed to update archive status");
 
   return c.json({ ok: true });
 });

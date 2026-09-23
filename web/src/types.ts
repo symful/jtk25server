@@ -69,6 +69,7 @@ export interface CalendarEvent {
   category: string | null;
   class_name: string | null;
   collection_time: string | null;
+  is_archived: number;
   created_at: string;
   updated_at: string;
 }

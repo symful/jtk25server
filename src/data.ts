@@ -266,6 +266,7 @@ export interface EventRow {
   category: string | null;
   class_name: string | null;
   collection_time: string | null;
+  is_archived: number;
   created_at: string;
   updated_at: string;
 }
@@ -305,28 +306,34 @@ export interface RoomRow {
 export async function getEventsFromD1(
   db: D1Database,
   className?: string,
+  includeArchived = false,
 ): Promise<EventRow[]> {
-  if (className) {
-    const { results } = await db
-      .prepare(
-        `SELECT id, ext_id, title, description, date, end_date, location, category,
-                class_name, collection_time, created_at, updated_at
-         FROM events
-         WHERE class_name = ? OR class_name IS NULL
-         ORDER BY date`,
-      )
-      .bind(className)
-      .all<EventRow>();
-    return results;
+  let query = `SELECT id, ext_id, title, description, date, end_date, location, category,
+                      class_name, collection_time, is_archived, created_at, updated_at
+               FROM events`;
+  const conditions: string[] = [];
+  const params: string[] = [];
+
+  if (!includeArchived) {
+    conditions.push(`is_archived = 0`);
   }
-  const { results } = await db
-    .prepare(
-      `SELECT id, ext_id, title, description, date, end_date, location, category,
-              class_name, collection_time, created_at, updated_at
-       FROM events
-       ORDER BY date`,
-    )
-    .all<EventRow>();
+
+  if (className) {
+    conditions.push(`(class_name = ? OR class_name IS NULL)`);
+    params.push(className);
+  }
+
+  if (conditions.length > 0) {
+    query += ` WHERE ${conditions.join(' AND ')}`;
+  }
+
+  query += ` ORDER BY date`;
+
+  const stmt = params.length > 0
+    ? db.prepare(query).bind(...params)
+    : db.prepare(query);
+
+  const { results } = await stmt.all<EventRow>();
   return results;
 }
 
@@ -337,7 +344,7 @@ export async function getEventById(
   return db
     .prepare(
       `SELECT id, ext_id, title, description, date, end_date, location, category,
-              class_name, collection_time, created_at, updated_at
+              class_name, collection_time, is_archived, created_at, updated_at
        FROM events WHERE id = ?`,
     )
     .bind(id)
@@ -406,6 +413,22 @@ export async function deleteEvent(
   const result = await db
     .prepare(`DELETE FROM events WHERE id = ?`)
     .bind(id)
+    .run();
+  return result.success;
+}
+
+export async function archiveEvent(
+  db: D1Database,
+  id: number,
+  archived: boolean,
+): Promise<boolean> {
+  const result = await db
+    .prepare(
+      `UPDATE events
+       SET is_archived = ?, updated_at = datetime('now')
+       WHERE id = ?`,
+    )
+    .bind(archived ? 1 : 0, id)
     .run();
   return result.success;
 }
